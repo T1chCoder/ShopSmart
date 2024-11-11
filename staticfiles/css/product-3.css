@@ -1,0 +1,12 @@
+.prdct-3 {
+    background-color: var(--bg-clr-2);
+    max-width: 560px;
+}
+
+.prdct-3 .pstr {
+    padding-top: 83.33%;
+}
+
+.prdct-3 > .inf {
+    padding: 34px 38px;
+}
