@@ -14,7 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework import viewsets
 
-class DefaultView(View):
+class DefaultView(LoginRequiredMixin):
+    login_url = '/log_in'
     page = None
     user_profile = None
 
