@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework import viewsets
 
-class DefaultView:
+class DefaultView(View):
     page = None
     user_profile = None
 
