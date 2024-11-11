@@ -59,7 +59,7 @@ class User(AbstractUser):
         return f"{self.username}"
 
     class Meta:
-        db_name = "users"
+        db_table = "users"
         verbose_name = "User"
         verbose_name_plural = "Users"
 
@@ -77,7 +77,7 @@ class UserPassport(models.Model):
         return f"{self.user.username}"
 
     class Meta:
-        db_name = "user_passports"
+        db_table = "user_passports"
         verbose_name = "User passport"
         verbose_name_plural = "User passports"
 
@@ -96,7 +96,7 @@ class Store(models.Model):
         return f"{self.title}"
 
     class Meta:
-        db_name = "stores"
+        db_table = "stores"
         verbose_name = "Store"
         verbose_name_plural = "Stores"
 
@@ -114,7 +114,7 @@ class StoreOwner(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "store_owners"
+        db_table = "store_owners"
         verbose_name = "Store owner"
         verbose_name_plural = "Store owners"
 
@@ -131,7 +131,7 @@ class StoreReport(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "store_reports"
+        db_table = "store_reports"
         verbose_name = "Store report"
         verbose_name_plural = "Store reports"
 
@@ -147,7 +147,7 @@ class Chat(models.Model):
         return f"{self.store.title} - {self.client.username}"
 
     class Meta:
-        db_name = "chats"
+        db_table = "chats"
         verbose_name = "Chat"
         verbose_name_plural = "Chats"
 
@@ -166,7 +166,7 @@ class ChatMessage(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "chat_messages"
+        db_table = "chat_messages"
         verbose_name = "Message"
         verbose_name_plural = "Messages"
 
@@ -182,7 +182,7 @@ class Category(models.Model):
         return f"{self.title}"
 
     class Meta:
-        db_name = "categories"
+        db_table = "categories"
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
@@ -199,7 +199,7 @@ class Banner(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "banners"
+        db_table = "banners"
         verbose_name = "Banner"
         verbose_name_plural = "Banners"
 
@@ -227,7 +227,7 @@ class Product(models.Model):
         return f"{self.title}"
 
     class Meta:
-        db_name = "products"
+        db_table = "products"
         verbose_name = "Product"
         verbose_name_plural = "Products"
 
@@ -243,7 +243,7 @@ class ProductPoster(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "product_posters"
+        db_table = "product_posters"
         verbose_name = "Product poster"
         verbose_name_plural = "Product posters"
 
@@ -262,7 +262,7 @@ class Review(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "reviews"
+        db_table = "reviews"
         verbose_name = "Review"
         verbose_name_plural = "Reviews"
 
@@ -279,7 +279,7 @@ class ProductReport(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "product_reports"
+        db_table = "product_reports"
         verbose_name = "Product report"
         verbose_name_plural = "Product reports"
 
@@ -300,7 +300,7 @@ class Order(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "orders"
+        db_table = "orders"
         verbose_name = "Order"
         verbose_name_plural = "Orders"
 
@@ -318,7 +318,7 @@ class OrderProduct(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "order_products"
+        db_table = "order_products"
         verbose_name = "Order product"
         verbose_name_plural = "Order products"
 
@@ -334,7 +334,7 @@ class OrderStatus(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "order_statuses"
+        db_table = "order_statuses"
         verbose_name = "Order status"
         verbose_name_plural = "Order statuses"
 
@@ -350,7 +350,7 @@ class OrderCancel(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "order_cancels"
+        db_table = "order_cancels"
         verbose_name = "Order cancel"
         verbose_name_plural = "Order cancels"
 
@@ -367,7 +367,7 @@ class UserProfile(models.Model):
         return f"{self.user.username}"
 
     class Meta:
-        db_name = "user_profiles"
+        db_table = "user_profiles"
         verbose_name = "User profile"
         verbose_name_plural = "User profiles"
 
@@ -383,7 +383,7 @@ class UserProfileDeliveryAddress(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "user_profile_delivery_addresses"
+        db_table = "user_profile_delivery_addresses"
         verbose_name = "User profile delivery address"
         verbose_name_plural = "User profile delivery addresses"
 
@@ -401,7 +401,7 @@ class UserProfileSavedCard(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "user_profile_saved_cards"
+        db_table = "user_profile_saved_cards"
         verbose_name = "User profile saved card"
         verbose_name_plural = "User profile saved cards"
 
@@ -419,7 +419,7 @@ class UserProfileFavorite(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "user_profile_favorites"
+        db_table = "user_profile_favorites"
         verbose_name = "User profile favorite"
         verbose_name_plural = "User profile favorites"
 
@@ -438,7 +438,7 @@ class UserProfileHistory(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "user_profiles_histories"
+        db_table = "user_profiles_histories"
         verbose_name = "User profile history"
         verbose_name_plural = "User profile histories"
 
@@ -456,7 +456,7 @@ class UserProfileCart(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_name = "user_profile_cart_products"
+        db_table = "user_profile_cart_products"
         verbose_name = "User profile cart product"
         verbose_name_plural = "User profile cart products"
 
