@@ -1,0 +1,32 @@
+footer {
+    background-color: var(--bg-clr-3);
+}
+
+footer .tp {
+    padding: 32px 0 28px 0;
+}
+
+footer .btm {
+    padding: 24px 0;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer .tp .lst {
+    gap: 3px;
+}
+
+footer .tp .lst a {
+    color: var(--txt-clr-2);
+}
+
+footer .tp .lst span,
+footer .btm .cp h5 {
+    color: var(--txt-clr-2);
+}
+
+footer .tp .hdr {
+    margin-bottom: 6px;
+}

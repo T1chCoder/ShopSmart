@@ -14,6 +14,9 @@ __pycache__/
 # Media files (user-uploaded content)
 media/
 
+# Static files (if you're not using a CDN or external static file hosting)
+static/
+
 # Virtual environment
 venv/
 env/
