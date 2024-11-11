@@ -19,6 +19,7 @@ venv/
 env/
 .venv/
 .env/
+.envrc
 
 # IDE files (VSCode, PyCharm, etc.)
 .vscode/
