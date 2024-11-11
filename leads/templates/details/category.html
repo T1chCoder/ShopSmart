@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        <div class="lst-gp wdth-cvr flx-drt-cln">
+            <div class="wdth-cvr flx-ctr flx-lft">
+                <h2>{{category_detail.title}}</h2>
+            </div>
+            <div style="gap: 32px;" class="rcm-prdct-lst wdth-cvr flx-spc-btwn">
+                {% for product in products %}
+                <div class="wdth-cvr flx-ctr">
+                    {% include "product-4.html" %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

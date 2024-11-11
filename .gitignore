@@ -1,0 +1,38 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Django migrations
+*/migrations/*
+
+# Database files
+*.sqlite3
+
+# Django secret key (if you're not using environment variables for it)
+*.env
+
+# Media files (user-uploaded content)
+media/
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# IDE files (VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Operating system files (macOS, Windows, etc.)
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Other potential files to ignore
+*.pot
+*.pyc
+*.pyo
+*.db

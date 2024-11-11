@@ -1,0 +1,529 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp pdng-2">
+    <div class="wdth-cvr flx-spc-btwn">
+        <div class="url flx-ctr">
+            <h6><a href="{% url 'home' %}">
+                    <h6>{{website_name}}</h6>
+                </a>&nbsp;/&nbsp;...&nbsp;/&nbsp;<a href="{% url 'details:category' product_detail.category.id %}">
+                    <h6>{{product_detail.category.title}}</h6>
+                </a></h6>
+        </div>
+        <div class="flx-ctr">
+            <div class="flx-ctr">
+                <button style="padding: 2px;" type="button" class="flx-ctr" id="btn-like-prdct">
+                    <span style="--fgr-sz: 20px;" class="fgr">
+                        <svg width="20" height="20" viewBox="0 0 20 20"
+                            fill="{% if is_liked == True %}#E85749{% else %}none{% endif %}"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_27_910)">
+                                <path
+                                    d="M10 16.875C10 16.875 2.1875 12.5 2.1875 7.18751C2.1875 6.24836 2.51289 5.33821 3.1083 4.61193C3.70371 3.88564 4.53236 3.38808 5.45328 3.2039C6.37419 3.01971 7.33047 3.16029 8.15943 3.6017C8.98838 4.04311 9.63879 4.7581 10 5.62501C10.3612 4.7581 11.0116 4.04311 11.8406 3.6017C12.6695 3.16029 13.6258 3.01971 14.5467 3.2039C15.4676 3.38808 16.2963 3.88564 16.8917 4.61193C17.4871 5.33821 17.8125 6.24836 17.8125 7.18751C17.8125 12.5 10 16.875 10 16.875Z"
+                                    stroke="#E85749" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_27_910">
+                                    <rect width="20" height="20" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wdth-cvr wrp flx-ctr">
+    <div style="gap: 16px;" class="wdth-cvr ptn-rlv flx-ctr flx-tp">
+        <div class="flx-cvr flx-ctr">
+            <div class="wdth-cvr flx-drt-cln">
+                <div style="gap: 16px;" class="wdth-cvr flx-ctr flx-tp">
+                    <div class="flx-ctr">
+                        <div style="gap: 8px;" class="prdct-pstr flx-ctr flx-tp">
+                            <div class="flx-ctr">
+                                <div style="gap: 6px; padding-top: 4px;" class="flx-drt-cln">
+                                    {% for poster in product_detail.product_poster.all %}
+                                    <button type="button"
+                                        class="flx-ctr{% if poster == product_detail.product_poster.first %} actv {% endif %}bdr-rds-3 ptn-rlv">
+                                        <span style="--fgr-sz: 38px;" class="fgr ovrfl-hdn bdr-rds-3">
+                                            <img src="{{poster.photo.url}}">
+                                        </span>
+                                    </button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="flx-ctr">
+                                <div class="flx-ctr">
+                                    <span style="--fgr-sz: 326px;" class="fgr ovrfl-hdn bdr-rds-3">
+                                        <img src="{{product_detail.product_poster.first.photo.url}}">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flx-ctr flx-cvr">
+                        <div class="wdth-cvr flx-ctr">
+                            <div class="wdth-cvr flx-drt-cln">
+                                <div class="prdct-tlt wdth-cvr flx-ctr">
+                                    <div class="wdth-cvr flx-ctr flx-lft">
+                                        <span>{{product_detail.title}}</span>
+                                    </div>
+                                </div>
+                                <div class="prdct-inf wdth-cvr flx-drt-cln">
+                                    <div class="wdth-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr flx-lft">
+                                            <h5 style="display: contents;" class="wdth-cvr">
+                                                <div class="flx-ctr">
+                                                    <div class="flx-ctr">
+                                                        <span style="--fgr-sz: 18px;" class="fgr">
+                                                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <g clip-path="url(#clip0_32_1313)">
+                                                                    <path
+                                                                        d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                        fill="#E85749" />
+                                                                </g>
+                                                                <defs>
+                                                                    <clipPath id="clip0_32_1313">
+                                                                        <rect width="18" height="18" fill="white"
+                                                                            transform="translate(0.5)" />
+                                                                    </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                    <div class="flx-ctr">
+                                                        <span style="--fgr-sz: 18px;" class="fgr">
+                                                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <g clip-path="url(#clip0_32_1313)">
+                                                                    <path
+                                                                        d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                        fill="#E85749" />
+                                                                </g>
+                                                                <defs>
+                                                                    <clipPath id="clip0_32_1313">
+                                                                        <rect width="18" height="18" fill="white"
+                                                                            transform="translate(0.5)" />
+                                                                    </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                    <div class="flx-ctr">
+                                                        <span style="--fgr-sz: 18px;" class="fgr">
+                                                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <g clip-path="url(#clip0_32_1313)">
+                                                                    <path
+                                                                        d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                        fill="#E85749" />
+                                                                </g>
+                                                                <defs>
+                                                                    <clipPath id="clip0_32_1313">
+                                                                        <rect width="18" height="18" fill="white"
+                                                                            transform="translate(0.5)" />
+                                                                    </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                    <div class="flx-ctr">
+                                                        <span style="--fgr-sz: 18px;" class="fgr">
+                                                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <g clip-path="url(#clip0_32_1313)">
+                                                                    <path
+                                                                        d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                        fill="#E85749" />
+                                                                </g>
+                                                                <defs>
+                                                                    <clipPath id="clip0_32_1313">
+                                                                        <rect width="18" height="18" fill="white"
+                                                                            transform="translate(0.5)" />
+                                                                    </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>&nbsp;{{product_detail.rating}}&nbsp;<a href="#"
+                                                    class="rvw-lnk hvr-undrln">
+                                                    <h5>{{product_detail.review_product.all|count}} reviews</h5>
+                                                </a>&nbsp;{{product_detail.bought}} Sold
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="wdth-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr flx-lft">
+                                            <div style="gap: 6px;" class="lnks flx-ctr">
+                                                <a href="#" class="hvr-undrln">
+                                                    <h5>Charachteristics</h5>
+                                                </a>
+                                                <a href="#" class="hvr-undrln">
+                                                    <h5>Description</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wdth-cvr flx-ctr">
+                                        <div style="gap: 1.5px;" class="wdth-cvr flx-drt-cln">
+                                            <div style="gap: 4px;" class="wdth-cvr flx-spc-btwn">
+                                                <div class="attr flx-ctr">
+                                                    <h6>Brand</h6>
+                                                </div>
+                                                <div class="flx-cvr flx-ctr flx-btm">
+                                                    <div class="ln ptn-rlv wdth-cvr flx-ctr"></div>
+                                                </div>
+                                                <div class="val flx-ctr">
+                                                    <h6>Module</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wdth-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr flx-lft">
+                                            <div class="flx-ctr">
+                                                <button type="button" class="flx-ctr hvr-undrln"
+                                                    id="btn-shw-all-prdct-inf">
+                                                    <h6>View all</h6>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prdct-sctns wdth-cvr flx-ctr">
+                    <div class="flx-ctr">
+                        <div class="flx-cvr">
+                            <button type="button" class="actv bdr-bx flx-ctr">
+                                <h4>Reviews</h4>
+                            </button>
+                        </div>
+                        <div class="flx-cvr">
+                            <button type="button" class="bdr-bx flx-ctr">
+                                <h4>Description</h4>
+                            </button>
+                        </div>
+                        <div class="flx-cvr">
+                            <button type="button" class="bdr-bx flx-ctr">
+                                <h4>Characteristics</h4>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="prdct-rtng wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-drt-cln">
+                        <div class="estm pdng-1 wdth-cvr flx-ctr">
+                            <div style="gap: 16px;" class="wdth-cvr flx-ctr flx-tp">
+                                <div style="width: calc(135px - 22px);" class="flx-ctr flx-lft">
+                                    <div class="flx-drt-cln">
+                                        <div style="height: 56px; margin-bottom: 6px;" class="flx-ctr">
+                                            <h1>{{product_detail.rating}}</h1>
+                                        </div>
+                                        <div class="flx-ctr">
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="#E85749" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="#E85749" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="#E85749" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="#E85749" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="#E85749" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="rvs-cnt flx-ctr">
+                                            <h6>{{product_detail.reviews}} reviews</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flx-cvr flx-ctr">
+                                    <div style="gap: 16px;" class="wdth-cvr flx-ctr">
+                                        <div class="flx-ctr">
+                                            <div class="rtng-gp flx-ctr flx-drt-cln">
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>5</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>4</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>3</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>2</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>1</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flx-ctr flx-cvr">
+                                            <div class="rtng-gp wdth-cvr flx-drt-cln">
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: 100%;"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: 100%;"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: 100%;"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: 100%;"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: 100%;"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prdct-rvs wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-ctr">
+                        <ul class="wdth-cvr flx-drt-cln">
+                            {% for review in product_detail.review_product.all|slice:":4" %}
+                            <li class="wdth-cvr flx-ctr">
+                                {% include "review.html" %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% if product_detail.review_product.all|count > 4 %}
+                <div class="wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-ctr">
+                        <a href="#" class="btn-shw-all-rvs bdr-bx bdr-rds-cvr wdth-cvr flx-ctr">
+                            <span>See all reviews</span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div style="width: 328px; top: calc(80px + 18px); margin-bottom: 18px;" class="ptn-stk right-cvr flx-ctr">
+            <div style="gap: 12px;" class="wdth-cvr flx-drt-cln">
+                <div class="bx-by bx-frm bdr-rds-1 bdr-bx wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-drt-cln">
+                        <div class="prc wdth-cvr flx-ctr flx-lft">
+                            <h3>{{product_detail.price}}</h3>
+                        </div>
+                        <div class="act-prc wdth-cvr flx-ctr flx-lft">
+                            <h6>{{product_detail.act_price}}</h6>
+                        </div>
+                        <div style="gap: 6px;" class="btns wdth-cvr flx-ctr">
+                            <div class="flx-cvr flx-ctr">
+                                <div class="wdth-cvr flx-ctr">
+                                    <button type="button" class="wdth-cvr flx-ctr bdr-bx bdr-rds-3" id="btn-add-to-crt">
+                                        <h6>Add to Cart</h6>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flx-cvr flx-ctr nn">
+                                <div class="wdth-cvr flx-ctr">
+                                    <button type="button" class="wdth-cvr flx-ctr bdr-bx bdr-rds-3">
+                                        <h6>Buy now</h6>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wdth-cvr flx-ctr">
+                            <hr class="wdth-cvr">
+                        </div>
+                        <div class="inf wdth-cvr flx-ctr">
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <text>75-Day Buyer Protection</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'details:store' product_detail.store.id %}"
+                    class="bx-str bx-frm bdr-rds-1 bdr-bx wdth-cvr flx-drt-cln">
+                    <div class="wdth-cvr flx-ctr">
+                        <div style="gap: 5.5px;" class="wdth-cvr flx-ctr flx-lft">
+                            <div class="flx-ctr">
+                                <span style="--fgr-sz: 40px;" class="fgr ovrfl-hdn bdr-rds-3">
+                                    <img src="{{product_detail.store.photo.url}}">
+                                </span>
+                            </div>
+                            <div class="flx-ctr">
+                                <div class="flx-drt-cln flx-tp">
+                                    <div class="tlt flx-ctr">
+                                        <h6>{{product_detail.store.title}}</h6>
+                                    </div>
+                                    <div class="inf flx-ctr">
+                                        <text>{{product_detail.store.rating}} seller's rating<span
+                                                style="font-size: 6px;">&nbsp;•&nbsp;</span>{{product_detail.store.subscribers}}
+                                            subscribers</text>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% if recommended_products.all|count > 0 %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        <div class="lst-gp wdth-cvr flx-drt-cln">
+            <div class="wdth-cvr flx-ctr flx-lft">
+                <h2>Selected for you</h2>
+            </div>
+            <div style="gap: 32px;" class="rcm-prdct-lst wdth-cvr flx-spc-btwn">
+                {% for product in recommended_products %}
+                <div class="wdth-cvr flx-ctr">
+                    {% include "product-4.html" %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttonLike = document.getElementById("btn-like-prdct");
+
+        if (buttonLike) {
+            buttonLike.addEventListener('click', function (e) {
+                e.preventDefault();
+                var data = {
+                    sender_id: "{{user.id}}",
+                    product_id: "{{product_detail.id}}",
+                };
+                fetch("{% url 'forms:like-product' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{csrf_token}}',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        var svg = buttonLike.querySelector("svg");
+                        if (data.is_liked) {
+                            svg.removeAttribute("fill");
+                            svg.setAttribute("fill", "#E85749");
+                        }
+                        else if (data.is_removed) {
+                            svg.removeAttribute("fill");
+                            svg.setAttribute("fill", "none");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+        }
+    });
+</script>
+{% endblock %}

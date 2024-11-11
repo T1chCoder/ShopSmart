@@ -1,0 +1,41 @@
+{% load my_tags %}
+<a href="{% url 'details:store' store.id %}" class="store bdr-rds-1 flx-ctr bdr-bx wdth-cvr">
+    <div class="wdth-cvr flx-drt-cln">
+        <div class="hdr wdth-cvr flx-spc-btwn">
+            <div class="lft flx-ctr">
+                <div class="pstr flx-ctr">
+                    <span style="--fgr-sz: 34px;" class="fgr ovrfl-hdn">
+                        <img src="{{store.photo.url}}">
+                    </span>
+                </div>
+                <div class="inf flx-drt-cln flx-tp">
+                    <div style="height: 16px;" class="tp flx-ctr">
+                        <span>{{store.title}}</span>
+                    </div>
+                    <div style="height: 13px;" class="btm flx-ctr">
+                        <small>{{store.user_profile_favorite_store.all|count}} subsribers&nbsp;<span style="font-size: 5px;">•</span>&nbsp;</small>
+                    </div>
+                </div>
+            </div>
+            <div class="rght flx-ctr">
+                <button type="button" class="sbcrb flx-ctr">
+                    <h6>Subscribe</h6>
+                </button>
+            </div>
+        </div>
+        <div class="wdth-cvr flx-ctr">
+            <hr class="wdth-cvr">
+        </div>
+        <div class="prds wdth-cvr flx-ctr">
+            {% for product in store.product_store.all %}
+            <div class="prd pdng-tp-cvr ptn-rlv flx-ctr">
+                <div class="ptn-ablt tp-cvr lft-cvr cvr flx-ctr">
+                    <span class="cvr flx-ctr ovrfl-hdn">
+                        <img src="{{product.product_poster.first.photo.url}}">
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</a>

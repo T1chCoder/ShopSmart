@@ -1,0 +1,70 @@
+{% load my_tags %}
+<a href="{% url 'details:product' product.id %}" class="prdct-4 ovrfl-hdn bdr-rds-1 wdth-cvr flx-drt-cln">
+    <div class="pstr ptn-rlv wdth-cvr flx-ctr">
+        <div class="ptn-ablt cvr tp-cvr lft-cvr flx-ctr">
+            <span class="flx-ctr cvr">
+                <img src="{{product.product_poster.first.photo.url}}">
+            </span>
+        </div>
+    </div>
+    <div class="inf bdr-bx wdth-cvr flx-drt-cln">
+        <div class="nm wdth-cvr flx-ctr flx-lft">
+            <span>{{product.title}}</span>
+        </div>
+        <div style="gap: 2px;" class="rtng wdth-cvr flx-ctr flx-lft">
+            <div class="flx-ctr">
+                <span style="--fgr-sz: 16px;" class="fgr">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M8.00004 11.5133L12.12 14L11.0267 9.31334L14.6667 6.16001L9.87337 5.75334L8.00004 1.33334L6.12671 5.75334L1.33337 6.16001L4.97337 9.31334L3.88004 14L8.00004 11.5133Z"
+                            fill="#E85749" />
+                    </svg>
+                </span>
+            </div>
+            <div style="height: 18px;" class="flx-ctr flx-tp">
+                <h6>{{product.rating}} ({{product.review_product.all|count}})</h6>
+            </div>
+        </div>
+        <div class="wdth-cvr flx-ctr">
+            <div class="wdth-cvr flx-spc-btwn">
+                <div class="flx-ctr">
+                    <div class="flx-drt-cln flx-tp">
+                        <div class="prc flx-ctr">
+                            <h6>{{product.act_price}}</h6>
+                        </div>
+                        <div class="act-prc flx-ctr">
+                            <h4>{{product.price}}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="flx-ctr">
+                    <button type="button" class="flx-ctr">
+                        <div class="flx-ctr">
+                            <span style="--fgr-sz: 32px;" class="fgr">
+                                <svg width="32" height="33" viewBox="0 0 32 33" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_8_111)">
+                                        <rect x="0.75" y="1.05005" width="30.5" height="30.5" rx="15.25"
+                                            stroke="#E85749" stroke-width="1.5" />
+                                        <path
+                                            d="M12 14.3V12.3H10V16.8C10 17.0761 9.77614 17.3 9.5 17.3C9.22386 17.3 9 17.0761 9 16.8V11.3H12C12 8.89633 13.9523 7.30005 16 7.30005C18.0575 7.30005 20 9.00561 20 11.3H23V23.8C23 24.6284 22.3284 25.3 21.5 25.3H16.5C16.2239 25.3 16 25.0761 16 24.8C16 24.5239 16.2239 24.3 16.5 24.3H21.5C21.7761 24.3 22 24.0761 22 23.8V12.3H20V14.3H19V12.3H13V14.3H12ZM16 8.30005C14.4477 8.30005 13 9.50377 13 11.3H19C19 9.59449 17.5425 8.30005 16 8.30005Z"
+                                            fill="#E85749" />
+                                        <path
+                                            d="M11.5 18.3C11.7761 18.3 12 18.5239 12 18.8V21.3H14.5C14.7761 21.3 15 21.5239 15 21.8C15 22.0761 14.7761 22.3 14.5 22.3H12V24.8C12 25.0761 11.7761 25.3 11.5 25.3C11.2239 25.3 11 25.0761 11 24.8V22.3H8.5C8.22386 22.3 8 22.0761 8 21.8C8 21.5239 8.22386 21.3 8.5 21.3H11V18.8C11 18.5239 11.2239 18.3 11.5 18.3Z"
+                                            fill="#E85749" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_8_111">
+                                            <rect width="32" height="32" fill="white"
+                                                transform="translate(0 0.300049)" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>

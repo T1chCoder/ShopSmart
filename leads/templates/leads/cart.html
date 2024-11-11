@@ -1,0 +1,451 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp flx-ctr">
+    {% if cart_products.all|count > 0 %}
+    <div style="gap: 16px; padding-top: 12px;" class="wdth-cvr ptn-rlv flx-ctr flx-tp">
+        <div class="flx-cvr flx-ctr">
+            <div class="wdth-cvr flx-drt-cln">
+                <div class="crt wdth-cvr bdr-bx bdr-rds-1 flx-ctr">
+                    <div class="wdth-cvr flx-drt-cln">
+                        <div class="hdr wdth-cvr flx-ctr">
+                            <div class="wdth-cvr flx-spc-btwn">
+                                <div class="flx-ctr">
+                                    <button type="button" class="flx-ctr" id="btn-crt-slct-all">
+                                        <div class="flx-ctr">
+                                            <div style="--fgr-sz: 20px;"
+                                                class="{% if all_selected == True %}chk-bx-actv {% endif %}ovrfl-hdn chk-bx bdr-bx fgr ptn-rlv flx-ctr">
+                                                <span class="flx-ctr">
+                                                    <svg width="14" height="16" viewBox="0 0 14 16" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M13.125 4C13.125 4.25587 13.0396 4.51187 12.8687 4.70687L5.86865 12.7069C5.69844 12.9031 5.47422 13 5.25 13C5.02578 13 4.80211 12.9023 4.63148 12.707L1.13148 8.70703C0.960586 8.5125 0.875 8.25625 0.875 8C0.875 7.42875 1.28379 7 1.75 7C1.97389 7 2.19789 7.09766 2.36852 7.29297L5.25 10.5875L11.632 3.29375C11.8016 3.09781 12.0258 3 12.25 3C12.7176 3 13.125 3.42813 13.125 4Z"
+                                                            fill="white" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="flx-ctr">
+                                            <span>All</span>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="flx-ctr"></div>
+                            </div>
+                        </div>
+                        <div style="margin: 10px 0;" class="wdth-cvr">
+                            <hr class="wdth-cvr">
+                        </div>
+                        {% for cart in cart_products %}
+                        <li class="wdth-cvr flx-ctr" id="crt-{{cart.id}}">
+                            <div class="prdct bdr-bx wdth-cvr flx-spc-btwn" id="btn-crt-slct-{{cart.id}}">
+                                <div class="lft flx-ctr">
+                                    <div class="flx-ctr">
+                                        <div style="--fgr-sz: 20px;"
+                                            class="{% if cart.is_selected == True %}chk-bx-actv {% endif %}ovrfl-hdn chk-bx bdr-bx fgr ptn-rlv flx-ctr">
+                                            <span class="flx-ctr">
+                                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M13.125 4C13.125 4.25587 13.0396 4.51187 12.8687 4.70687L5.86865 12.7069C5.69844 12.9031 5.47422 13 5.25 13C5.02578 13 4.80211 12.9023 4.63148 12.707L1.13148 8.70703C0.960586 8.5125 0.875 8.25625 0.875 8C0.875 7.42875 1.28379 7 1.75 7C1.97389 7 2.19789 7.09766 2.36852 7.29297L5.25 10.5875L11.632 3.29375C11.8016 3.09781 12.0258 3 12.25 3C12.7176 3 13.125 3.42813 13.125 4Z"
+                                                        fill="white" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'details:product' cart.product.id %}" class="flx-ctr">
+                                        <span style="--fgr-sz: 120px;" class="ovrfl-hdn bdr-rds-1 fgr">
+                                            <img src="{{cart.product.product_poster.first.photo.url}}">
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="md flx-ctr flx-cvr flx-tp">
+                                    <div class="cvr flx-ctr">
+                                        <div class="cvr flx-drt-cln flx-spc-btwn">
+                                            <div class="flx-ctr wdth-cvr flx-lft">
+                                                <a href="{% url 'details:product' cart.product.id %}" class="flx-ctr">
+                                                    <span>{{cart.product.title}}</span>
+                                                </a>
+                                            </div>
+                                            <div class="wdth-cvr flx-ctr">
+                                                <div class="wdth-cvr flx-spc-btwn flx-tp">
+                                                    <div class="str flx-ctr">
+                                                        <h5>Store:&nbsp;<a
+                                                                href="{% url 'details:store' cart.product.store.id %}"
+                                                                class="hvr-undrln flx-ctr">{{cart.product.store.title}}</a>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="flx-ctr">
+                                                        <div class="cnt flx-ctr ovrfl-hdn flx-spc-btwn">
+                                                            <div class="flx-ctr">
+                                                                <button type="button" class="flx-ctr"
+                                                                    id="{% if cart.quantity == 1 %}btn-dcrs-crt-qnt-{{cart.id}}-nn{% else %}btn-dcrs-crt-qnt-{{cart.id}}{% endif %}">
+                                                                    <span style="--fgr-sz: 16px;" class="fgr">
+                                                                        <svg width="16" height="16" viewBox="0 0 16 16"
+                                                                            fill="none"
+                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                            <g clip-path="url(#clip0_104_2980)">
+                                                                                <rect x="1" y="7" width="14" height="2"
+                                                                                    rx="1" fill="white" />
+                                                                            </g>
+                                                                            <defs>
+                                                                                <clipPath id="clip0_104_2980">
+                                                                                    <rect width="16" height="16"
+                                                                                        fill="white" />
+                                                                                </clipPath>
+                                                                            </defs>
+                                                                        </svg>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="txt hgt-cvr flx-ctr" id="crt-qnt-{{cart.id}}">
+                                                                <span>{{cart.quantity}}</span>
+                                                            </div>
+                                                            <div class="flx-ctr">
+                                                                <button type="button" class="flx-ctr"
+                                                                    id="{% if cart.quantity == cart.product.stock %}btn-incr-crt-qnt-{{cart.id}}-nn{% else %}btn-incr-crt-qnt-{{cart.id}}{% endif %}">
+                                                                    <span style="--fgr-sz: 16px;" class="fgr">
+                                                                        <svg width="16" height="16" viewBox="0 0 16 16"
+                                                                            fill="none"
+                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                            <g clip-path="url(#clip0_104_2980)">
+                                                                                <rect x="1" y="7" width="14" height="2"
+                                                                                    rx="1" fill="white" />
+                                                                                <rect x="7" y="15" width="14" height="2"
+                                                                                    rx="1" transform="rotate(-90 7 15)"
+                                                                                    fill="white" />
+                                                                            </g>
+                                                                            <defs>
+                                                                                <clipPath id="clip0_104_2980">
+                                                                                    <rect width="16" height="16"
+                                                                                        fill="white" />
+                                                                                </clipPath>
+                                                                            </defs>
+                                                                        </svg>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rght flx-ctr">
+                                    <div class="hgt-cvr flx-drt-cln flx-spc-btwn flx-btm">
+                                        <div class="flx-ctr">
+                                            <button type="button" class="btn-dlt flx-ctr" id="btn-rmv-{{cart.id}}">
+                                                <div class="flx-ctr">
+                                                    <span style="--fgr-sz: 18px;" class="fgr">
+                                                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M6 1.3501C5.63181 1.3501 5.33333 1.65233 5.33333 2.02515V2.7002H10.6667V2.02515C10.6667 1.65233 10.3682 1.3501 10 1.3501H6ZM4 2.02515V2.7002H0.666667C0.29848 2.7002 0 3.00244 0 3.37525C0 3.74807 0.29848 4.0503 0.666667 4.0503H1.1556L2.32967 16.1725C2.4301 17.2095 3.29116 18 4.32012 18H11.6799C12.7089 18 13.5699 17.2095 13.6703 16.1725L14.8444 4.0503H15.3333C15.7015 4.0503 16 3.74807 16 3.37525C16 3.00244 15.7015 2.7002 15.3333 2.7002H12V2.02515C12 0.906692 11.1045 0 10 0H6C4.89543 0 4 0.906692 4 2.02515ZM7.11111 6.97552C7.11111 6.60271 6.81262 6.30047 6.44444 6.30047C6.07626 6.30047 5.77778 6.60271 5.77778 6.97552V13.726C5.77778 14.0988 6.07626 14.4011 6.44444 14.4011C6.81262 14.4011 7.11111 14.0988 7.11111 13.726V6.97552ZM10.2222 6.97552C10.2222 6.60271 9.92373 6.30047 9.55556 6.30047C9.18738 6.30047 8.88889 6.60271 8.88889 6.97552V13.726C8.88889 14.0988 9.18738 14.4011 9.55556 14.4011C9.92373 14.4011 10.2222 14.0988 10.2222 13.726V6.97552Z"
+                                                                fill="#E85749" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div style="height: 16px;" class="flx-ctr">
+                                                    <span>Remove</span>
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div class="flx-ctr">
+                                            <div class="flx-drt-cln flx-btm">
+                                                <div style="height: 22px;" class="prc flx-ctr">
+                                                    <h3>{{cart.product.price}}</h3>
+                                                </div>
+                                                <div style="height: 16px;" class="act-prc flx-ctr">
+                                                    <span>{{cart.product.act_price}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var buttonRemove = document.getElementById("btn-rmv-{{cart.id}}");
+                                var buttonIncrease = document.getElementById("btn-incr-crt-qnt-{{cart.id}}");
+                                var buttonDecrease = document.getElementById("btn-dcrs-crt-qnt-{{cart.id}}");
+                                var quantityText = document.getElementById("crt-qnt-{{cart.id}}").querySelector("span")
+                                var buttonSelectAll = document.getElementById("btn-crt-slct-all");
+                                var buttonSelect = document.getElementById("btn-crt-slct-{{cart.id}}")
+                                var cartSelectedCount = document.getElementById("prdcts-slctd-cnt");
+
+                                if (buttonRemove) {
+                                    buttonRemove.addEventListener('click', function (e) {
+                                        e.preventDefault();
+                                        var data = {
+                                            sender_id: "{{user.id}}",
+                                            cart_id: "{{cart.id}}",
+                                        };
+                                        fetch("{% url 'forms:remove-from-cart' %}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': '{{csrf_token}}',
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                var cart = document.getElementById("crt-{{cart.id}}");
+                                                cart.remove()
+                                                var cartSelected = document.getElementById("crt-slctd-{{cart.id}}");
+                                                if (cartSelected) {
+                                                    cartSelectedCount.querySelector("h5").textContent = `Products (${data.carts_selected}):`;
+                                                    cartSelected.remove();
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                            });
+                                    });
+                                }
+
+                                if (buttonIncrease) {
+                                    buttonIncrease.addEventListener('click', function (e) {
+                                        e.preventDefault();
+                                        var data = {
+                                            sender_id: "{{user.id}}",
+                                            cart_id: "{{cart.id}}",
+                                            is_plus: true,
+                                        };
+                                        fetch("{% url 'forms:change-cart-quantity' %}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': '{{csrf_token}}',
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                quantityText.textContent = data.quantity;
+                                                if (data.is_max) {
+                                                    buttonIncrease.removeAttribute("id");
+                                                    buttonIncrease.setAttribute("id", "btn-incr-crt-qnt-{{cart.id}}-nn");
+                                                }
+                                                buttonDecreaseNone = document.getElementById("btn-dcrs-crt-qnt-{{cart.id}}-nn");
+                                                if (data.is_max === false && buttonDecreaseNone) {
+                                                    buttonDecreaseNone.removeAttribute("id");
+                                                    buttonDecreaseNone.setAttribute("id", "btn-dcrs-crt-qnt-{{cart.id}}");
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                            });
+                                    });
+                                }
+
+                                if (buttonDecrease) {
+                                    buttonDecrease.addEventListener('click', function (e) {
+                                        e.preventDefault();
+                                        var data = {
+                                            sender_id: "{{user.id}}",
+                                            cart_id: "{{cart.id}}",
+                                            is_plus: false,
+                                        };
+                                        fetch("{% url 'forms:change-cart-quantity' %}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': '{{csrf_token}}',
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                quantityText.textContent = data.quantity;
+                                                if (data.is_min) {
+                                                    buttonDecrease.removeAttribute("id");
+                                                    buttonDecrease.setAttribute("id", "btn-dcrs-crt-qnt-{{cart.id}}-nn");
+                                                }
+                                                buttonIncreaseNone = document.getElementById("btn-incrs-crt-qnt-{{cart.id}}-nn");
+                                                if (data.is_max === false && buttonIncreaseNone) {
+                                                    buttonIncreaseNone.removeAttribute("id");
+                                                    buttonIncreaseNone.setAttribute("id", "btn-incr-crt-qnt-{{cart.id}}");
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                            });
+                                    });
+                                }
+
+                                if (buttonSelectAll) {
+                                    buttonSelectAll.addEventListener('click', function (e) {
+                                        e.preventDefault();
+                                        var data = {
+                                            sender_id: "{{user.id}}",
+                                            all: true,
+                                        };
+                                        fetch("{% url 'forms:select-cart' %}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': '{{csrf_token}}',
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                var checkBoxes = $(".chk-bx");
+                                                cartSelectedCount.querySelector("h5").textContent = `Products (${data.selected_products_count}):`;
+                                                checkBoxes.each(function () {
+                                                    if (data.all_selected) {
+                                                        $(this).addClass("chk-bx-actv");
+                                                    } else {
+                                                        $(this).removeClass("chk-bx-actv");
+                                                    }
+                                                });
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                            });
+                                    });
+                                }
+
+                                if (buttonSelect) {
+                                    buttonSelect.addEventListener("click", function (e) {
+                                        e.preventDefault();
+                                        var data = {
+                                            sender_id: "{{user.id}}",
+                                            all: false,
+                                            cart_id: "{{cart.id}}",
+                                        };
+                                        fetch("{% url 'forms:select-cart' %}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': '{{csrf_token}}',
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                var checkBox = buttonSelect.querySelector(".chk-bx");
+                                                var checkBoxes = $(".chk-bx");
+                                                cartSelectedCount.querySelector("h5").textContent = `Products (${data.selected_products_count}):`;
+                                                checkBoxes.each(function () {
+                                                    if (data.all_selected) {
+                                                        $(this).addClass("chk-bx-actv");
+                                                    } else {
+                                                        if (data.is_selected) {
+                                                            checkBox.classList.add("chk-bx-actv");
+                                                        } else {
+                                                            checkBox.classList.remove("chk-bx-actv");
+                                                            buttonSelectAll.querySelector(".chk-bx-actv").classList.remove("chk-bx-actv");
+                                                        }
+                                                    }
+                                                });
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                            });
+                                    });
+                                }
+                            });
+                        </script>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 328px; top: calc(80px + 12px);" class="ptn-stk right-cvr flx-ctr">
+            <div style="gap: 12px;" class="wdth-cvr flx-drt-cln">
+                <div class="bx-by bx-frm bdr-rds-1 bdr-bx wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-drt-cln">
+                        <div class="wdth-cvr flx-ctr">
+                            <div style="gap: 8px;" class="wdth-cvr flx-ctr flx-lft">
+                                {% for cart in cart_products_selected %}
+                                <div class="flx-ctr" id="crt-slctd-{{cart.id}}">
+                                    <span style="--fgr-sz: 56px;" class="bdr-rds-3 fgr ovrfl-hdn">
+                                        <img src="{{cart.product.product_poster.first.photo.url}}">
+                                    </span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div style="margin: 10px 0;" class="wdth-cvr flx-ctr">
+                            <hr class="wdth-cvr">
+                        </div>
+                        <div style="margin-bottom: 2px;" class="wdth-cvr flx-ctr">
+                            <div class="wdth-cvr flx-spc-btwn">
+                                <div class="flx-ctr" id="prdcts-slctd-cnt">
+                                    <h5>Products ({{cart_products_selected.all|count}}):</h5>
+                                </div>
+                                <div class="flx-ctr">
+                                    <h5>200</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 8px;" class="wdth-cvr flx-ctr">
+                            <div class="wdth-cvr flx-spc-btwn">
+                                <div class="flx-ctr">
+                                    <h5>Delivery:</h5>
+                                </div>
+                                <div class="flx-ctr">
+                                    <h5>200</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin: 0;" class="btns wdth-cvr flx-ctr">
+                            <div class="flx-cvr flx-ctr">
+                                <div class="wdth-cvr flx-ctr">
+                                    <button type="button" class="wdth-cvr flx-ctr bdr-bx bdr-rds-3" id="btn-add-to-crt">
+                                        <h6>Check out</h6>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div style="padding-top: 12px;" class="wdth-cvr flx-ctr">
+        <div class="wdth-cvr flx-ctr">
+            <div class="flx-ctr wdth-cvr">
+                <div class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
+                    <div class="tlt flx-ctr">
+                        <h3>There is nothing in the cart</h3>
+                    </div>
+                    <div class="txt flx-ctr">
+                        <span>Browse the catalog and choose from millions of products with free shipping</span>
+                    </div>
+                    <div class="flx-ctr">
+                        <a href="{% url 'home' %}" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">
+                            <h6>To the main</h6>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% if recommended_products.all|count > 0 %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        <div class="lst-gp wdth-cvr flx-drt-cln">
+            <div class="wdth-cvr flx-ctr flx-lft">
+                <h2>Selected for you</h2>
+            </div>
+            <div style="gap: 32px;" class="rcm-prdct-lst wdth-cvr flx-spc-btwn">
+                {% for product in recommended_products %}
+                <div class="wdth-cvr flx-ctr">
+                    {% include "product-4.html" %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

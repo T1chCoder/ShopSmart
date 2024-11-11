@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        {% include "banner.html" %}
+    </div>
+</div>
+{% if hot_products.all|count > 0 %}
+<div class="wdth-cvr wrp pdng-2">
+    <div class="wdth-cvr flx-ctr">
+        <div class="lst-gp wdth-cvr flx-drt-cln">
+            <div class="wdth-cvr flx-ctr flx-lft">
+                <h2>Hot</h2>
+            </div>
+            <div style="gap: 58.67px;" class="wdth-cvr flx-spc-btwn">
+                {% for product in hot_products|slice:":4" %}
+                {% include "product-1.html" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% if hot_products.all|count > 4 %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        <div class="wdth-cvr flx-drt-cln">
+            <div style="gap: 51px;" class="wdth-cvr flx-spc-btwn">
+                {% for product in hot_products|slice:"5:7" %}
+                {% include "product-2.html" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if hot_products.all|count > 7 %}
+<div class="wdth-cvr wrp pdng-2">
+    <div class="wdth-cvr flx-ctr">
+        <div class="wdth-cvr flx-drt-cln">
+            <div style="gap: 32px;" class="wdth-cvr flx-spc-btwn">
+                {% for product in hot_products|slice:"8:9" %}
+                {% include "product-3.html" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+{% if popular_products.all|count > 0 %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        <div class="lst-gp wdth-cvr flx-drt-cln">
+            <div class="wdth-cvr flx-ctr flx-lft">
+                <h2>Popular</h2>
+            </div>
+            <div style="gap: 32px;" class="wdth-cvr flx-spc-btwn">
+                {% for product in popular_products %}
+                {% include "product-4.html" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if recommended_products.all|count > 0 %}
+<div class="wdth-cvr wrp pdng-1">
+    <div class="wdth-cvr flx-ctr">
+        <div class="lst-gp wdth-cvr flx-drt-cln">
+            <div class="wdth-cvr flx-ctr flx-lft">
+                <h2>Selected for you</h2>
+            </div>
+            <div style="gap: 32px;" class="rcm-prdct-lst wdth-cvr flx-spc-btwn">
+                {% for product in recommended_products %}
+                <div class="wdth-cvr flx-ctr">
+                    {% include "product-4.html" %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

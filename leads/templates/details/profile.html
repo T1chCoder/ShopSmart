@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp">
+    <div style="gap: 12px; padding: 12px 0;" class="ptn-rlv wdth-cvr flx-ctr flx-tp">
+        <div class="flx-cvr flx-ctr">
+            <div class="wdth-cvr flx-drt-cln">
+                <div class="wdth-cvr flx-ctr">
+                    <div class="pfp bdr-rds-2 wdth-cvr flx-ctr flx-lft">
+                        <div class="flx-ctr">
+                            <span style="--fgr-sz: 124px;" class="bdr-rds-cvr ovrfl-hdn fgr">
+                                <img src="{{user.photo.url}}">
+                            </span>
+                        </div>
+                        <div class="flx-ctr">
+                            <div class="inf flx-drt-cln flx-tp">
+                                <div style="height: 38px;" class="nm flx-ctr flx-lft">
+                                    <h2>{{user.name}} {{user.surname}}</h2>
+                                </div>
+                                <div style="height: 16px;" class="eml flx-ctr flx-lft">
+                                    <span>{{user.email}}</span>
+                                </div>
+                                <div style="height: 16px;" class="phn flx-ctr flx-lft">
+                                    <span>{{user.phone}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if seen_products.all|count > 0 %}
+                <div class="wdth-cvr pdng-1">
+                    <div class="wdth-cvr flx-ctr">
+                        <div class="lst-gp wdth-cvr flx-drt-cln">
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <h2>Previously seen</h2>
+                            </div>
+                            <div style="gap: 16px;" class="rcm-prdct-lst-2 wdth-cvr flx-spc-btwn">
+                                {% for seen_product in seen_products %}
+                                {% with product=seen_product.product %}
+                                <div class="wdth-cvr flx-ctr">
+                                    {% include "product-4.html" %}
+                                </div>
+                                {% endwith %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if recommended_products.all|count > 0 %}
+                <div class="wdth-cvr pdng-1">
+                    <div class="wdth-cvr flx-ctr">
+                        <div class="lst-gp wdth-cvr flx-drt-cln">
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <h2>More to love</h2>
+                            </div>
+                            <div style="gap: 16px;" class="rcm-prdct-lst-2 wdth-cvr flx-spc-btwn">
+                                {% for product in recommended_products %}
+                                <div class="wdth-cvr flx-ctr">
+                                    {% include "product-4.html" %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div style="max-width: 328px; top: calc(80px + 12px);" class="ptn-stk lft-cvr wdth-cvr flx-ctr">
+            {% include "navbar.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}

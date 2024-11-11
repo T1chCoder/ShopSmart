@@ -1,0 +1,15 @@
+{% load my_tags %}
+<a href="{% url 'details:product' product.id %}" class="prdct-1 ovrfl-hdn bdr-rds-1 wdth-cvr flx-drt-cln">
+    <div class="pstr ptn-rlv wdth-cvr flx-ctr">
+        <div class="ptn-ablt tp-cvr cvr lft-cvr flx-ctr">
+            <span class="flx-ctr cvr">
+                <img src="{{product.product_poster.first.photo.url}}">
+            </span>
+        </div>
+    </div>
+    <div class="inf bdr-bx wdth-cvr flx-drt-cln">
+        <div class="wdth-cvr flx-ctr flx-lft">
+            <span>Text</span>
+        </div>
+    </div>
+</a>

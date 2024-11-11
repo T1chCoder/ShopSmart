@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp">
+    <div style="gap: 12px; padding: 12px 0;" class="ptn-rlv wdth-cvr flx-ctr flx-tp">
+        <div class="flx-cvr flx-ctr">
+            <div class="wdth-cvr flx-drt-cln">
+                <div class="wdth-cvr">
+                    <div class="wdth-cvr flx-ctr">
+                        <div style="gap: 14px;" class="wdth-cvr flx-drt-cln">
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <h2>Favorites</h2>
+                            </div>
+                            {% if favorite_products.all|count > 0 %}
+                            <div style="gap: 16px;" class="rcm-prdct-lst-2 wdth-cvr flx-spc-btwn">
+                                {% for wishlist in favorite_products %}
+                                {% with product=wishlist.product %}
+                                <div class="wdth-cvr flx-ctr">
+                                    {% include "product-4.html" %}
+                                </div>
+                                {% endwith %}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div style="padding: 104px 124px;" class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
+                                <div class="tlt flx-ctr">
+                                    <h3>It's empty here</h3>
+                                </div>
+                                <div class="txt flx-ctr">
+                                    <span>You don't have any active orders! Use the search to find everything you
+                                        need.</span>
+                                </div>
+                                <div class="flx-ctr">
+                                    <a href="/" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">
+                                        <h6>To the main</h6>
+                                    </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="max-width: 328px; top: calc(80px + 12px);" class="ptn-stk lft-cvr wdth-cvr flx-ctr">
+            {% include "navbar.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}

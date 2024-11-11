@@ -1,0 +1,10 @@
+header {
+    background-color: var(--bg-clr-2);
+    z-index: 1000;
+}
+
+header .md button,
+header .md a {
+    gap: 6px;
+    padding: 16px;
+}
