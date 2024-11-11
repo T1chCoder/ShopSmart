@@ -25,9 +25,10 @@ class DefaultView(View):
             context[page] = True
             context["page"] = page
         context["website_name"] = settings.WEBSITE_NAME
-        user_profile = UserProfile.objects.get(user=self.request.user)
-        context["user_profile"] = user_profile 
-        self.user_profile = user_profile
+        if self.request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            context["user_profile"] = user_profile 
+            self.user_profile = user_profile
 
         return context
     
@@ -64,7 +65,7 @@ class CartView(DefaultView, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = Product.objects.all().filter(is_active=True)
-        cart_products = UserProfileCart.objects.all().filter(user_profile=self.user_profile)
+            cart_products = UserProfileCart.objects.all().filter(user_profile=self.user_profile)
         context["recommended_products"] = products.exclude(id__in=cart_products.values_list("id", flat=True))
         products_selected = []
         for cart in cart_products:
