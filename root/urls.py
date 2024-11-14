@@ -7,7 +7,7 @@ from leads.views import *
 
 urlpatterns = [
     #Views
-    path("admin/", admin.site.urls),
+    path(f"admin/{os.getenv('ADMIN_PANEL_KEY')}/", admin.site.urls),
     path("", HomeView.as_view(), name="home"),
     path("cart", CartView.as_view(), name="cart"),
     #Order-Views
@@ -35,7 +35,7 @@ urlpatterns = [
     #More-URL
     path("", include("leads.urls.detail"), name="details"),
     path("form/", include("leads.urls.form"), name="forms"),
-    path("api/v1", include("leads.urls.api.v1.main"), name="api-v1"),
+    path(f"api/v1/{os.getenv('API_V1_KEY')}", include("leads.urls.api.v1.main"), name="api-v1"),
 ]
 
 if settings.DEBUG:
