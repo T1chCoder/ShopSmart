@@ -49,7 +49,8 @@ class User(AbstractUser):
             if not last_record:
                 last_record = 0
             self.custom_id = (last_record.custom_id + 1) if last_record else 1 
-        self.username = f"{self.name}-{self.custom_id}"
+        if not self.username:
+            self.username = f"{self.name}-{self.custom_id}"
         return super().save(*args, **kwargs)
 
     def full_name(self):
