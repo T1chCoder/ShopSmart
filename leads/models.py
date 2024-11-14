@@ -31,7 +31,7 @@ class User(AbstractUser):
     first_name = None 
     last_name = None
     id = models.UUIDField("ID", primary_key=True, default=uuid.uuid4, editable=False, blank=False)
-    
+    custom_id = models.IntegerField("Short ID", unique=True, editable=False, blank=False, null=True)
     name = models.CharField("Name", max_length=250, blank=False, null=True)
     patronymic = models.CharField("Patronymic", max_length=250, blank=True, null=True)
     surname = models.CharField("Surname", max_length=250, blank=False, null=True)
