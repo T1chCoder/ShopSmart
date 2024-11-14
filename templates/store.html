@@ -12,16 +12,35 @@
                     <div style="height: 16px;" class="tp flx-ctr">
                         <span>{{store.title}}</span>
                     </div>
-                    <div style="height: 13px;" class="btm flx-ctr">
-                        <small>{{store.user_profile_favorite_store.all|count}} subsribers&nbsp;<span style="font-size: 5px;">•</span>&nbsp;</small>
+                    {% with subscribers=store.user_profile_favorite_store.all|count %}
+                    <div style="height: 13px;"
+                        class="btm flx-ctr {% if store.orders > 0 or subscribers > 0 %}{% else %}nn{% endif %}"
+                        id="sbcrb-and-ordr-amnt-{{store.id}}">
+                        <small>
+                            <div class="flx-ctr {% if subscribers == 0 %}nn{% endif %}" id="sbscrb-amnt-{{store.id}}">
+                                <small>
+                                    {{subscribers}} subsriber{% if subscribers > 1 %}s{% endif %}
+                                </small>
+                            </div>
+                            <small class="{% if store.orders > 0 and subscribers > 0 %}{% else %}nn{% endif %}"
+                                style="font-size: 5px;" id="sbscrb-amnt-dt-{{store.id}}">•</small>&nbsp;
+                            <div class="flx-ctr {% if store.orders == 0 %}nn{% endif %}" id="ordrs-amnt-{{store.id}}">
+                                <small>
+                                    {{store.orders}} order{% if store.orders > 1 %}s{% endif %}
+                                </small>
+                            </div>
+                        </small>
                     </div>
+                    {% endwith %}
                 </div>
             </div>
-            <div class="rght flx-ctr">
-                <button type="button" class="sbcrb flx-ctr">
-                    <h6>Subscribe</h6>
+            <object class="rght flx-ctr">
+                <button type="button" class="sbcrb flx-ctr" id="btn-str-sbscrb-{{store.id}}">
+                    <div style="height: 18px;" class="flx-ctr">
+                        <h6>{% if store.id in subscribed_stores_id %}Unsubscribe{% else %}Subscribe{% endif %}</h6>
+                    </div>
                 </button>
-            </div>
+            </object>
         </div>
         <div class="wdth-cvr flx-ctr">
             <hr class="wdth-cvr">
@@ -39,3 +58,54 @@
         </div>
     </div>
 </a>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttonSubscribe = document.getElementById("btn-str-sbscrb-{{store.id}}");
+        var subscriberAmount = document.getElementById("sbscrb-amnt-{{store.id}}");
+        var dot = document.getElementById("sbscrb-amnt-dt-{{store.id}}");
+        var orderAmount = document.getElementById("ordrs-amnt-{{store.id}}");
+        var body = document.getElementById("sbcrb-and-ordr-amnt-{{store.id}}");
+
+        if (buttonSubscribe) {
+            buttonSubscribe.addEventListener('click', function (e) {
+                e.preventDefault();
+                var data = {
+                    sender_id: "{{user.id}}",
+                    store_id: "{{store.id}}",
+                };
+                fetch("{% url 'forms:subscribe-store' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{csrf_token}}',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.is_subscribed) {
+                            body.classList.remove("nn");
+                            buttonSubscribe.querySelector("h6").textContent = "Unsubscribe";
+                            subscriberAmount.querySelector("small").textContent = data.text;
+                            subscriberAmount.classList.remove("nn");
+                            if (!orderAmount.classList.contains("nn")) {
+                                dot.classList.remove("nn");
+                            }
+                        }
+                        else if (!data.is_subscribed) {
+                            buttonSubscribe.querySelector("h6").textContent = "Subscribe";
+                            subscriberAmount.querySelector("small").textContent = data.text;
+                            subscriberAmount.classList.add("nn");
+                            dot.classList.add("nn");
+                            if (subscriberAmount.classList.contains("nn") && orderAmount.classList.contains("nn")) {
+                                body.classList.add("nn");
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+        }
+    });
+</script>

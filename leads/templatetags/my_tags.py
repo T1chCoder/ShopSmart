@@ -38,6 +38,18 @@ def minus(obj, args):
     return value - number
 
 @register.filter
+def mutiply(obj, args):
+    value = int(obj)
+    number = int(args)
+    return value * number
+
+@register.filter
+def divide(obj, args):
+    value = int(obj)
+    number = int(args)
+    return value / number
+
+@register.filter
 def first_obj(obj):
     return obj.first()
 

@@ -212,25 +212,51 @@ class ProductPosterAdmin(admin.TabularInline):
         if obj:
             return self.readonly_fields + ("product",)
         return self.readonly_fields
-
+    
+class ProductAttributeAdmin(admin.TabularInline):
+    model = ProductAttribute
+    fk_name = "product"
+    extra = 1
+    fields = ("variable", "value",)
+    verbose_name = "Attribute"
+    verbose_name_plural = "Attributes"
+    readonly_fields = ("product", "updated", "created")
+    
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return self.readonly_fields + ("product",)
+        return self.readonly_fields
+    
 @admin.register(Product)
 class ProductAdmin(DefaultAdmin):
-    inlines = [ProductPosterAdmin]
-    list_display = ["title", "store", "category", "description", "price", "discount", "rating", "bought", "reviews", "is_popular", "is_hot", "is_active", "updated", "created"]
+    inlines = [ProductPosterAdmin, ProductAttributeAdmin]
+    list_display = ["title_text", "store", "category", "description_text", "price", "discount", "rating", "bought", "reviews", "is_popular", "is_hot", "is_active", "updated", "created"]
     list_filter = ["store", "category", "price", "discount", "stock", "rating", "bought", "reviews", "is_popular", "is_hot", "is_active", "updated", "created"]
     search_fields = ["id", "title", "store__title", "category__title", "description", "price", "discount", "bought", "reviews"]
     fieldsets = [
         ("Edits", {"fields": ["store", "category", "title", "description", "act_price", "discount", "stock", "is_popular", "is_hot"]}),
     ]
 
+    def description_text(self, obj):
+        return self.ShortenText(obj.description, max=18)
+    
+    def title_text(self, obj):
+        return self.ShortenText(obj.title, max=12)
+    
+    title_text.short_description = f"Title"
+    description_text.short_description = f"Description"
+
 @admin.register(Review)
 class ProductReviewAdmin(DefaultAdmin):
-    list_display = ["product", "sender", "rating", "text", "is_active", "updated", "created"]
+    list_display = ["product_text", "sender", "rating", "text", "is_active", "updated", "created"]
     list_filter = ["product", "sender", "rating", "is_active", "updated", "created"]
     search_fields = ["id", "product__title", "sender__username", "comment"]
     fieldsets = [
         ("Edits", {"fields": ["product", "rating", "comment"]}),
     ]
+
+    def product_text(self, obj):
+        return self.ShortenText(obj.product.title, max=18)
 
     def text(self, obj):
         return self.ShortenText(obj.comment, max=18)
@@ -241,6 +267,7 @@ class ProductReviewAdmin(DefaultAdmin):
         obj.save()
 
     text.short_description = f"Comment"
+    product_text.short_description = f"Product"
 
 @admin.register(ProductReport)
 class ProductReportAdmin(DefaultAdmin):

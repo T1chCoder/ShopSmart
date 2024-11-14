@@ -1,0 +1,91 @@
+.rgr {
+    padding: 24px;
+    background-color: var(--bg-clr-2);
+    min-width: 448px;
+    max-width: 548px;
+    margin: auto;
+}
+
+.rgr .hdr {
+    margin-bottom: 9px;
+}
+
+.rgr input {
+    font-size: 14px;
+    border: 1.5px solid var(--bg-clr-4);
+    padding: 13.5px;
+}
+
+.rgr div:has(input),
+.rgr button {
+    margin: 4px 0;
+}
+
+.rgr button {
+    background-color: var(--bg-clr-4);
+    padding: 14.5px;
+}
+
+.rgr button h6 {
+    color: var(--txt-clr-4);
+    font-weight: 600;
+}
+
+.rgr hr {
+    margin: 12px 0;
+    height: 1px;
+    background-color: var(--bg-clr-4);
+}
+
+.rgr .lnk {
+    margin: 6px 0;
+}
+
+.rgr .lnk h5 {
+    color: var(--txt-clr-2);
+}
+
+.rgr .lnk a h5 {
+    color: var(--txt-clr-1);
+}
+
+.rgr .addtnl {
+    margin: 8px 0;
+}
+
+.rgr .cprwght small {
+    text-align: center;
+    color: var(--txt-clr-2);
+    display: block;
+}
+
+.rgr .cprwght small a {
+    font-size: 13px;
+}
+
+.rgr .bd > div.actv:has(input) {
+    position: relative;
+    margin-bottom: calc(21px + 4px);
+}
+
+.rgr .bd > div.actv:has(input) input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.rgr .bd > div.actv:has(input)::after {
+    content: attr(message);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    color: var(--txt-clr-4);
+    background-color: var(--bg-clr-4);
+    width: 100%;
+    z-index: 1000;
+    font-size: 13px;
+    box-sizing: border-box;
+    padding: 4px 13.5px;
+    line-height: 1;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}

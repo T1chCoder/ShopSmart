@@ -23,112 +23,230 @@
                                         <div class="flx-ctr">
                                             <div class="flx-ctr">
                                                 <span style="--fgr-sz: 16px;" class="fgr">
-                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                                    {% if rating > 0 and 1 > rating %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_32_2087)">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
                                                             <path
-                                                                d="M8.00016 12.2633L12.1202 14.75L11.0268 10.0633L14.6668 6.90998L9.8735 6.50331L8.00016 2.08331L6.12683 6.50331L1.3335 6.90998L4.9735 10.0633L3.88016 14.75L8.00016 12.2633Z"
-                                                                fill="#E85749" />
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 1 %}var(--bg-clr-4){% elif 0 >= rating %}var(--bg-clr-7){% endif %}" />
                                                         </g>
                                                         <defs>
-                                                            <clipPath id="clip0_32_2087">
-                                                                <rect width="16" height="16" fill="white"
-                                                                    transform="translate(0 0.75)" />
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
+                                                    {% endif %}
                                                 </span>
                                             </div>
                                             <div class="flx-ctr">
                                                 <span style="--fgr-sz: 16px;" class="fgr">
-                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                                    {% if rating > 1 and 2 > rating %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_32_2087)">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
                                                             <path
-                                                                d="M8.00016 12.2633L12.1202 14.75L11.0268 10.0633L14.6668 6.90998L9.8735 6.50331L8.00016 2.08331L6.12683 6.50331L1.3335 6.90998L4.9735 10.0633L3.88016 14.75L8.00016 12.2633Z"
-                                                                fill="#E85749" />
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 2 %}var(--bg-clr-4){% elif 1 >= rating %}var(--bg-clr-7){% endif %}" />
                                                         </g>
                                                         <defs>
-                                                            <clipPath id="clip0_32_2087">
-                                                                <rect width="16" height="16" fill="white"
-                                                                    transform="translate(0 0.75)" />
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
+                                                    {% endif %}
                                                 </span>
                                             </div>
                                             <div class="flx-ctr">
                                                 <span style="--fgr-sz: 16px;" class="fgr">
-                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                                    {% if rating > 2 and 3 > rating %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_32_2087)">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
                                                             <path
-                                                                d="M8.00016 12.2633L12.1202 14.75L11.0268 10.0633L14.6668 6.90998L9.8735 6.50331L8.00016 2.08331L6.12683 6.50331L1.3335 6.90998L4.9735 10.0633L3.88016 14.75L8.00016 12.2633Z"
-                                                                fill="#E85749" />
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 3 %}var(--bg-clr-4){% elif 2 >= rating %}var(--bg-clr-7){% endif %}" />
                                                         </g>
                                                         <defs>
-                                                            <clipPath id="clip0_32_2087">
-                                                                <rect width="16" height="16" fill="white"
-                                                                    transform="translate(0 0.75)" />
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
+                                                    {% endif %}
                                                 </span>
                                             </div>
                                             <div class="flx-ctr">
                                                 <span style="--fgr-sz: 16px;" class="fgr">
-                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                                    {% if rating > 3 and 4 > rating %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_32_2087)">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
                                                             <path
-                                                                d="M8.00016 12.2633L12.1202 14.75L11.0268 10.0633L14.6668 6.90998L9.8735 6.50331L8.00016 2.08331L6.12683 6.50331L1.3335 6.90998L4.9735 10.0633L3.88016 14.75L8.00016 12.2633Z"
-                                                                fill="#E85749" />
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 4 %}var(--bg-clr-4){% elif 3 >= rating %}var(--bg-clr-7){% endif %}" />
                                                         </g>
                                                         <defs>
-                                                            <clipPath id="clip0_32_2087">
-                                                                <rect width="16" height="16" fill="white"
-                                                                    transform="translate(0 0.75)" />
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
+                                                    {% endif %}
                                                 </span>
                                             </div>
                                             <div class="flx-ctr">
                                                 <span style="--fgr-sz: 16px;" class="fgr">
-                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                                    {% if rating > 4 and 5 > rating %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_32_2087)">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
                                                             <path
-                                                                d="M8.00016 12.2633L12.1202 14.75L11.0268 10.0633L14.6668 6.90998L9.8735 6.50331L8.00016 2.08331L6.12683 6.50331L1.3335 6.90998L4.9735 10.0633L3.88016 14.75L8.00016 12.2633Z"
-                                                                fill="#E85749" />
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="16" height="17" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 5 %}var(--bg-clr-4){% elif 4 >= rating %}var(--bg-clr-7){% endif %}" />
                                                         </g>
                                                         <defs>
-                                                            <clipPath id="clip0_32_2087">
-                                                                <rect width="16" height="16" fill="white"
-                                                                    transform="translate(0 0.75)" />
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
+                                                    {% endif %}
                                                 </span>
                                             </div>
                                             &nbsp;
                                         </div>
-                                        {{store_detail.rating}}
+                                        {{rating}}
                                     </span>
                                 </div>
-                                <div style="height: 16px; margin: 0 0 4px 0;" class="phn flx-ctr flx-lft">
+                                {% with subscribers=store_detail.user_profile_favorite_store.all|count %}
+                                <div style="height: 16px; margin: 0 0 4px 0;"
+                                    class="phn flx-ctr flx-lft {% if store_orders_count > 0 or subscribers > 0 %}{% else %}nn{% endif %}"
+                                    id="sbcrb-and-ordr-amnt">
                                     <span>
-                                        {{store_detail.user_profile_favorite_store.all|count}} subscribers
-                                        <span style="font-size: 8px;">&nbsp;•&nbsp;</span>
-                                        {{store_orders_count}} orders
+                                        <div class="flx-ctr {% if subscribers == 0 %}nn{% endif %}" id="sbscrb-amnt">
+                                            <span>
+                                                {{subscribers}} subscriber{% if subscribers > 1 %}s{% endif %}
+                                            </span>
+                                        </div>
+                                        <span style="font-size: 8px;"
+                                            class="{% if store_orders_count > 0 and subscribers > 0 %}{% else %}nn{% endif %}"
+                                            id="sbscrb-amnt-dt">&nbsp;•&nbsp;</span>
+                                        <div class="flx-ctr {% if store_orders_count == 0 %}nn{% endif %}"
+                                            id="ordrs-amnt">
+                                            <span>
+                                                {{store_orders_count}} order{% if store_orders_count > 1 %}s{% endif %}
+                                            </span>
+                                        </div>
                                     </span>
                                 </div>
+                                {% endwith %}
                                 <div class="flx-ctr">
-                                    <button type="button" class="sbscrb flx-ctr bdr-bx">
+                                    {% if user.is_authenticated %}
+                                    <button type="button" class="sbscrb flx-ctr bdr-bx" id="btn-str-sbscrb">
+                                        <div style="height: 16px;" class="flx-ctr">
+                                            <span>{% if is_subscribed %}Unsubscribe{% else %}Subscribe{% endif %}</span>
+                                        </div>
+                                    </button>
+                                    {% else %}
+                                    <a href="{% url 'log-in' %}" class="sbscrb flx-ctr bdr-bx">
                                         <div style="height: 16px;" class="flx-ctr">
                                             <span>Subscribe</span>
                                         </div>
-                                    </button>
+                                    </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -153,4 +271,55 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttonSubscribe = document.getElementById("btn-str-sbscrb");
+        var subscriberAmount = document.getElementById("sbscrb-amnt");
+        var dot = document.getElementById("sbscrb-amnt-dt");
+        var orderAmount = document.getElementById("ordrs-amnt");
+        var body = document.getElementById("sbcrb-and-ordr-amnt");
+
+        if (buttonSubscribe) {
+            buttonSubscribe.addEventListener('click', function (e) {
+                e.preventDefault();
+                var data = {
+                    sender_id: "{{user.id}}",
+                    store_id: "{{store_detail.id}}",
+                };
+                fetch("{% url 'forms:subscribe-store' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{csrf_token}}',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.is_subscribed) {
+                            body.classList.remove("nn");
+                            buttonSubscribe.querySelector("span").textContent = "Unsubscribe";
+                            subscriberAmount.querySelector("span").textContent = data.text;
+                            subscriberAmount.classList.remove("nn");
+                            if (!orderAmount.classList.contains("nn")) {
+                                dot.classList.remove("nn");
+                            }
+                        }
+                        else if (!data.is_subscribed) {
+                            buttonSubscribe.querySelector("span").textContent = "Subscribe";
+                            subscriberAmount.querySelector("span").textContent = data.text;
+                            subscriberAmount.classList.add("nn");
+                            dot.classList.add("nn");
+                            if (subscriberAmount.classList.contains("nn") && orderAmount.classList.contains("nn")) {
+                                body.classList.add("nn");
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+        }
+    });
+</script>
 {% endblock %}

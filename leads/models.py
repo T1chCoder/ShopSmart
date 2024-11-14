@@ -8,17 +8,11 @@ from datetime import datetime
 from django.dispatch import receiver
 import os
 import uuid
-
-#Choices
-CURRENCY_CHOICES = (
-    ("RUB", "rub"),
-    ("USD", "usd"),
-)
-
-LANGUAGE_CHOICES = (
-    ("RUSSIAN", "russian"),
-    ("ENGLISH", "english"),
-)
+from decimal import Decimal
+from leads.choices import *
+from django.db.models import Avg
+from django.utils import timezone
+from django.db import transaction
 
 def user_photo_path(instance, filename):
     return os.path.join("images/user/", datetime.now().date().strftime("%Y/%m/%d"), filename)
@@ -37,6 +31,7 @@ class User(AbstractUser):
     first_name = None 
     last_name = None
     id = models.UUIDField("ID", primary_key=True, default=uuid.uuid4, editable=False, blank=False)
+    custom_id = models.IntegerField("Short ID", unique=True, editable=False, blank=False, null=True)
     name = models.CharField("Name", max_length=250, blank=False, null=True)
     patronymic = models.CharField("Patronymic", max_length=250, blank=True, null=True)
     surname = models.CharField("Surname", max_length=250, blank=False, null=True)
@@ -49,7 +44,12 @@ class User(AbstractUser):
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
     def save(self, *args, **kwargs):
-        self.username = self.username.lower()
+        if not self.custom_id:
+            last_record = User.objects.all().order_by('-custom_id').first()
+            if not last_record:
+                last_record = 0
+            self.custom_id = (last_record.custom_id + 1) if last_record else 1 
+        self.username = f"{self.name}-{self.custom_id}"
         return super().save(*args, **kwargs)
 
     def full_name(self):
@@ -59,7 +59,6 @@ class User(AbstractUser):
         return f"{self.username}"
 
     class Meta:
-        db_table = "users"
         verbose_name = "User"
         verbose_name_plural = "Users"
 
@@ -77,7 +76,6 @@ class UserPassport(models.Model):
         return f"{self.user.username}"
 
     class Meta:
-        db_table = "user_passports"
         verbose_name = "User passport"
         verbose_name_plural = "User passports"
 
@@ -96,7 +94,6 @@ class Store(models.Model):
         return f"{self.title}"
 
     class Meta:
-        db_table = "stores"
         verbose_name = "Store"
         verbose_name_plural = "Stores"
 
@@ -114,7 +111,6 @@ class StoreOwner(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "store_owners"
         verbose_name = "Store owner"
         verbose_name_plural = "Store owners"
 
@@ -131,7 +127,6 @@ class StoreReport(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "store_reports"
         verbose_name = "Store report"
         verbose_name_plural = "Store reports"
 
@@ -147,7 +142,6 @@ class Chat(models.Model):
         return f"{self.store.title} - {self.client.username}"
 
     class Meta:
-        db_table = "chats"
         verbose_name = "Chat"
         verbose_name_plural = "Chats"
 
@@ -166,7 +160,6 @@ class ChatMessage(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "chat_messages"
         verbose_name = "Message"
         verbose_name_plural = "Messages"
 
@@ -182,7 +175,6 @@ class Category(models.Model):
         return f"{self.title}"
 
     class Meta:
-        db_table = "categories"
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
@@ -199,7 +191,6 @@ class Banner(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "banners"
         verbose_name = "Banner"
         verbose_name_plural = "Banners"
 
@@ -223,13 +214,32 @@ class Product(models.Model):
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def save(self, *args, **kwargs):
+        self.price = self.act_price - self.act_price * (Decimal(self.discount) / Decimal(100))
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.title}"
 
     class Meta:
-        db_table = "products"
         verbose_name = "Product"
         verbose_name_plural = "Products"
+
+class ProductAttribute(models.Model):
+    id = models.UUIDField("ID", primary_key=True, default=uuid.uuid4, editable=False, blank=False)
+    product = models.ForeignKey(Product, verbose_name="Product", on_delete=models.CASCADE, editable=False, blank=False, null=True, related_name="product_attribute")
+    variable = models.CharField("Variable", choices=PRODUCT_ATTRIBUTE_CHOICES, max_length=250, blank=False, null=True)
+    value = models.CharField("Variable", max_length=250, blank=False, null=True)
+    # More
+    updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
+    created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
+
+    def __str__(self):
+        return f"{self._meta.verbose_name} {self.id}"
+
+    class Meta:
+        verbose_name = "Product attribute"
+        verbose_name_plural = "Product attributes"
 
 class ProductPoster(models.Model):
     id = models.UUIDField("ID", primary_key=True, default=uuid.uuid4, editable=False, blank=False)
@@ -243,26 +253,41 @@ class ProductPoster(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "product_posters"
         verbose_name = "Product poster"
         verbose_name_plural = "Product posters"
 
 class Review(models.Model):
+    class Rating(models.IntegerChoices):
+        VERY_BAD = 1, 'Very Bad'
+        BAD = 2, 'Bad'
+        AVERAGE = 3, 'Average'
+        GOOD = 4, 'Good'
+        EXCELLENT = 5, 'Excellent'
+
     id = models.UUIDField("ID", primary_key=True, default=uuid.uuid4, editable=False, blank=False)
     product = models.ForeignKey(Product, verbose_name="Product", on_delete=models.CASCADE, blank=False, null=True, related_name="review_product")
     sender = models.ForeignKey(User, verbose_name="Sender", on_delete=models.CASCADE, editable=False, blank=False, null=True, related_name="review_sender")
-    rating = models.IntegerField("Rating", blank=False, null=True)
+    rating = models.IntegerField("Rating", choices=Rating.choices, blank=False, null=True)
     comment = models.TextField("Comment", blank=False, null=True)
     is_active = models.BooleanField("Posted", default=True, editable=False, blank=False, null=False)
     # More
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def save(self, *args, **kwargs):
+        product_reviews_rating = Product.objects.get(id=self.product.id).review_product.all().values_list("rating", flat=True)
+        average_rating = product_reviews_rating.aggregate(Avg('rating'))['rating__avg']
+        if average_rating is not None:
+            self.product.rating = round(average_rating * 2) / 2
+        else:
+            self.product.rating = 0
+        self.product.save()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "reviews"
         verbose_name = "Review"
         verbose_name_plural = "Reviews"
 
@@ -279,14 +304,16 @@ class ProductReport(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "product_reports"
         verbose_name = "Product report"
         verbose_name_plural = "Product reports"
 
 class Order(models.Model):
     id = models.UUIDField("ID", primary_key=True, default=uuid.uuid4, editable=False, blank=False)
+    custom_id = models.IntegerField("Short ID", unique=True, editable=False, blank=False, null=True)
     customer = models.ForeignKey(User, verbose_name="Customer", on_delete=models.CASCADE, editable=False, blank=False, null=True, related_name="order_customer")
+    address = models.CharField("Address", max_length=250, blank=False, null=True)
     total = models.DecimalField("Total", max_digits=10, decimal_places=2, editable=False, blank=False, null=True)
+    delivery_date = models.DateTimeField("Delivery date", editable=False, blank=True, null=True)
     is_pending = models.BooleanField("Pending", editable=False, default=False, blank=False, null=False)
     is_shifted = models.BooleanField("Shifted", editable=False, default=False, blank=False, null=False)
     is_delivered = models.BooleanField("Delivered", editable=False, default=False, blank=False, null=False)
@@ -296,11 +323,33 @@ class Order(models.Model):
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def status(self):
+        if self.is_paid:
+            return "Issued to the buyer"
+        else:
+            if self.is_cancelled:
+                return "Cancelled by the buyer"
+            else:
+                if self.is_delivered:
+                    return "Awaiting Collection"
+                else:
+                    if self.is_shifted:
+                        return "On the Way"
+                    else:
+                        return "Awaiting Processing" 
+
+    def save(self, *args, **kwargs):
+        if not self.custom_id:
+            last_record = Order.objects.all().order_by('-custom_id').first()
+            if not last_record:
+                last_record = 0
+            self.custom_id = (last_record.custom_id + 1) if last_record else 1 
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "orders"
         verbose_name = "Order"
         verbose_name_plural = "Orders"
 
@@ -314,11 +363,21 @@ class OrderProduct(models.Model):
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def save(self, *args, **kwargs):
+        order = Order.objects.get(id=self.order.id)
+        order_products = OrderProduct.objects.filter(order=order)
+        total = Decimal(0.00)
+        for order_product in order_products:
+            sum = order_product.sum or order_product.product.price
+            total += sum * order_product.quantity
+        order.total = total
+        order.save()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "order_products"
         verbose_name = "Order product"
         verbose_name_plural = "Order products"
 
@@ -330,11 +389,23 @@ class OrderStatus(models.Model):
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def save(self, *args, **kwargs):
+        if self.status == "PENDING":
+            self.order.is_pending = True
+        if self.status == "SHIPPED":
+            self.order.is_shifted = True
+        if self.status == "DELIVERED":
+            self.order.delivery_date = self.created or timezone.now()
+            self.order.is_delivered = True
+        if self.status == "PAID":
+            self.order.is_paid = True
+        self.order.save()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "order_statuses"
         verbose_name = "Order status"
         verbose_name_plural = "Order statuses"
 
@@ -346,11 +417,15 @@ class OrderCancel(models.Model):
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def save(self, *args, **kwargs):
+        self.order.is_cancelled = True
+        self.order.save()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "order_cancels"
         verbose_name = "Order cancel"
         verbose_name_plural = "Order cancels"
 
@@ -367,7 +442,6 @@ class UserProfile(models.Model):
         return f"{self.user.username}"
 
     class Meta:
-        db_table = "user_profiles"
         verbose_name = "User profile"
         verbose_name_plural = "User profiles"
 
@@ -383,7 +457,6 @@ class UserProfileDeliveryAddress(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "user_profile_delivery_addresses"
         verbose_name = "User profile delivery address"
         verbose_name_plural = "User profile delivery addresses"
 
@@ -401,7 +474,6 @@ class UserProfileSavedCard(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "user_profile_saved_cards"
         verbose_name = "User profile saved card"
         verbose_name_plural = "User profile saved cards"
 
@@ -419,7 +491,6 @@ class UserProfileFavorite(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "user_profile_favorites"
         verbose_name = "User profile favorite"
         verbose_name_plural = "User profile favorites"
 
@@ -438,7 +509,6 @@ class UserProfileHistory(models.Model):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "user_profiles_histories"
         verbose_name = "User profile history"
         verbose_name_plural = "User profile histories"
 
@@ -447,16 +517,22 @@ class UserProfileCart(models.Model):
     user_profile = models.ForeignKey(UserProfile, verbose_name=UserProfile._meta.verbose_name, on_delete=models.CASCADE, editable=False, blank=False, null=True, related_name="user_profile_cart")
     product = models.ForeignKey(Product, verbose_name=Product._meta.verbose_name, on_delete=models.CASCADE, blank=False, null=True, related_name="user_profile_cart_product")
     quantity = models.IntegerField("Quantity", blank=False, null=True)
+    sum = models.DecimalField("Sum", default=5.0, max_digits=10, decimal_places=2, blank=False, null=True)
+    total = models.DecimalField("Total", default=5.0, max_digits=10, decimal_places=2, editable=False, blank=False, null=True)
     is_selected = models.BooleanField("Selected", default=True, blank=False, null=False)
     # More
     updated = models.DateTimeField("Updated", auto_now=True, editable=False, blank=False, null=True)
     created = models.DateTimeField("Created", auto_now_add=True, editable=False, blank=False, null=True)
 
+    def save(self, *args, **kwargs):
+        self.sum = self.quantity * self.product.price
+        self.total = self.quantity * self.product.act_price
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self._meta.verbose_name} {self.id}"
 
     class Meta:
-        db_table = "user_profile_cart_products"
         verbose_name = "User profile cart product"
         verbose_name_plural = "User profile cart products"
 
@@ -465,3 +541,44 @@ def user_signals(sender, instance, created, **kwargs):
     if created:
         UserPassport.objects.create(user=instance)
         UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=Review)
+def user_signals(sender, instance, created, **kwargs):
+    if created:
+        product_reviews_rating = Product.objects.get(id=instance.product.id).review_product.all().values_list("rating", flat=True)
+        average_rating = product_reviews_rating.aggregate(Avg('rating'))['rating__avg']
+        if average_rating is not None:
+            instance.product.rating = round(average_rating * 2) / 2
+        else:
+            instance.product.rating = 0
+        instance.product.save()
+
+@receiver(post_delete, sender=Review)
+def review_delete_signals(sender, instance, **kwargs):
+    product_reviews_rating = Product.objects.get(id=instance.product.id).review_product.all().values_list("rating", flat=True)
+    average_rating = product_reviews_rating.aggregate(Avg('rating'))['rating__avg']
+    if average_rating is not None:
+        instance.product.rating = round(average_rating * 2) / 2
+    else:
+        instance.product.rating = 0
+    instance.product.save()
+
+@receiver(post_delete, sender=OrderProduct)
+def order_product_delete_signals(sender, instance, **kwargs):
+    try:
+        order = Order.objects.get(id=instance.order.id)
+        order_products = OrderProduct.objects.filter(order=order).exclude(id=instance.id)
+        total = Decimal(0.00)
+        for order_product in order_products:
+            sum = order_product.sum or order_product.product.price
+            total += sum * order_product.quantity
+        order.total = total
+        order.save()
+    except:
+        pass
+    
+@receiver(post_save, sender=OrderProduct)
+def order_product_signals(sender, instance, created, **kwargs):
+    if created:
+        instance.sum = instance.product.price
+        transaction.on_commit(lambda: instance.save(update_fields=['sum']))

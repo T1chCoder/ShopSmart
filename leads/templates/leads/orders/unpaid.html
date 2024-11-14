@@ -31,119 +31,15 @@
                                     </div>
                                 </div>
                             </div>
-                            {% if unpaid_orders.all|count > 0 %}
+                            {% if user.is_authenticated and unpaid_orders.all|count > 0 %}
                             <div class="wdth-cvr flx-ctr">
-                                <div class="wdth-cvr bdr-rds-1 bdr-bx flx-drt-cln">
-                                    <div class="ordr bdr-rds-1 wdth-cvr flx-drt-cln">
-                                        <div class="hdr wrp bdr-bx wdth-cvr flx-ctr flx-lft">
-                                            <div class="flx-ctr">
-                                                <h4>ID: 22994267</h4>
-                                            </div>
-                                        </div>
-                                        <div class="wrp ln wdth-cvr flx-ctr">
-                                            <hr class="wdth-cvr">
-                                        </div>
-                                        <div class="wdth-cvr wrp flx-ctr">
-                                            <div style="gap: 12px;" class="wdth-cvr flx-drt-cln">
-                                                <div class="wdth-cvr flx-ctr">
-                                                    <div class="inf wdth-cvr flx-cvr flx-lft">
-                                                        <div class="lft flx-ctr flx-lft">
-                                                            <span>Status:</span>
-                                                        </div>
-                                                        <div class="rhgt flx-ctr flx-cvr flx-lft">
-                                                            <div class="flx-ctr">
-                                                                <span>Issued to the buyer</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="wdth-cvr flx-ctr">
-                                                    <div class="inf wdth-cvr flx-cvr flx-lft">
-                                                        <div class="lft flx-ctr flx-lft">
-                                                            <span>Delivery date:</span>
-                                                        </div>
-                                                        <div class="rhgt flx-ctr flx-cvr flx-lft">
-                                                            <div class="flx-ctr">
-                                                                <span>Sunday, May 12th</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="wdth-cvr flx-ctr">
-                                                    <div class="inf wdth-cvr flx-cvr flx-lft">
-                                                        <div class="lft flx-ctr flx-lft">
-                                                            <span>Pick-up point:</span>
-                                                        </div>
-                                                        <div class="rhgt flx-ctr flx-cvr flx-lft">
-                                                            <div class="flx-ctr">
-                                                                <span>Nukus, Garezsizlik MFY, 12 Sabyr Kamalov
-                                                                    Street</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="wdth-cvr flx-ctr">
-                                                    <div class="inf wdth-cvr flx-cvr flx-lft">
-                                                        <div class="lft flx-ctr flx-lft">
-                                                            <span>Opening hours:</span>
-                                                        </div>
-                                                        <div class="rhgt flx-ctr flx-cvr flx-lft">
-                                                            <div class="flx-ctr">
-                                                                <span>10:00-20:00</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="wdth-cvr flx-ctr">
-                                                    <div class="inf wdth-cvr flx-cvr flx-lft">
-                                                        <div class="lft flx-ctr flx-lft">
-                                                            <span>Order date:</span>
-                                                        </div>
-                                                        <div class="rhgt flx-ctr flx-cvr flx-lft">
-                                                            <div class="flx-ctr">
-                                                                <span>Friday, May 10, 2024 at 14:01</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="wdth-cvr flx-ctr">
-                                                    <div class="inf wdth-cvr flx-cvr flx-lft">
-                                                        <div class="lft flx-ctr flx-lft">
-                                                            <span>Order amount:</span>
-                                                        </div>
-                                                        <div class="rhgt flx-ctr flx-cvr flx-lft">
-                                                            <div class="flx-ctr">
-                                                                <span>73,000 USD</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="wrp ln wdth-cvr flx-ctr">
-                                            <hr class="wdth-cvr">
-                                        </div>
-                                        <div class="wdth-cvr flx-ctr">
-                                            <button type="button" class="wdth-cvr flx-ctr wrp">
-                                                <div class="wdth-cvr flx-spc-btwn">
-                                                    <div class="flx-ctr">
-                                                        <span>2 products</span>
-                                                    </div>
-                                                    <div class="flx-ctr">
-                                                        <span style="--fgr-sz: 24px;" class="fgr">
-                                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M16.78 6.71997C16.9204 6.8606 16.9993 7.05122 16.9993 7.24997C16.9993 7.44872 16.9204 7.63935 16.78 7.77997L10.53 14.03C10.3894 14.1704 10.1987 14.2493 10 14.2493C9.80125 14.2493 9.61062 14.1704 9.47 14.03L3.222 7.78197C3.08952 7.6398 3.01739 7.45175 3.02082 7.25745C3.02425 7.06315 3.10296 6.87777 3.24038 6.74035C3.37779 6.60294 3.56317 6.52423 3.75748 6.5208C3.95178 6.51737 4.13982 6.58949 4.282 6.72197L10 12.439L15.72 6.71897C15.8606 6.57852 16.0512 6.49963 16.25 6.49963C16.4487 6.49963 16.6394 6.57952 16.78 6.71997Z"
-                                                                    fill="black" />
-                                                            </svg>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ul class="ordr-slct-prdcs wdth-cvr bdr-rds-1 bdr-bx flx-drt-cln">
+                                    {% for order in unpaid_orders %}
+                                    <li class="wdth-cvr flx-cvr">
+                                        {% include "order.html" %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                             {% else %}
                             <div style="padding: 104px 124px;" class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
@@ -151,8 +47,7 @@
                                     <h3>It's empty here</h3>
                                 </div>
                                 <div class="txt flx-ctr">
-                                    <span>You don't have any active orders! Use the search to find everything you
-                                        need.</span>
+                                    <span>You have no unpaid orders! Ready to add something to your cart? Complete your purchase to get started.</span>
                                 </div>
                                 <div class="flx-ctr">
                                     <a href="/" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">

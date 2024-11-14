@@ -49,12 +49,14 @@
     margin: 10px 0;
 }
 
-.bx-by .btns button {
+.bx-by .btns button,
+.bx-by .btns a {
     padding: 14.5px;
     background-color: var(--bg-clr-4);
 }
 
 .bx-by .btns button,
+.bx-by .btns a,
 .bx-by .prc>h3,
 .bx-str .tlt h6,
 .prdct-inf .lnks h5,
@@ -66,7 +68,17 @@
     font-weight: 600;
 }
 
-.bx-by .btns button>h6 {
+.prdct-inf .attr h6,
+.prdct-inf .val h6 {
+    max-width: 300px;
+}
+
+.prdct-inf .val h6 {
+    text-align: right;
+}
+
+.bx-by .btns button>h6,
+.bx-by .btns a>h6 {
     color: var(--txt-clr-4);
 }
 
@@ -96,6 +108,8 @@
     box-sizing: border-box;
     border: 2px solid var(--bg-clr-4);
     border-radius: 8px;
+    left: -2px;
+    top: -2px;
 }
 
 .prdct-tlt {
@@ -168,7 +182,7 @@
 
 .prdct-rtng .ln {
     height: 10px;
-    background-color: var(--bg-clr-2);
+    background-color: var(--bg-clr-7);
     margin: 2px 0;
 }
 
@@ -244,18 +258,18 @@
     margin-bottom: 4px;
 }
 
-.crt .prdct .md .cnt {
+.cnt {
     border-radius: 8px;
     background-color: var(--bg-clr-4);
     border: 2px solid var(--bg-clr-4);
 }
 
-.crt .prdct .md .cnt button {
+.cnt button {
     padding: 8px;
     background-color: var(--bg-clr-4);
 }
 
-.crt .prdct .md .cnt .txt {
+.cnt .txt {
     width: 36px;
     background-color: var(--bg-clr-2);
     height: calc(36px - 2px * 2);
@@ -321,4 +335,111 @@
 
 .pfp .sbscrb span {
     color: var(--txt-clr-3);
+}
+
+#section {
+    scroll-margin-top: 100px;
+}
+
+#charachteristics {
+    scroll-margin-top: 100px;
+}
+
+.prdct-rv-inf .prdc-pstr-rv {
+    width: 113px;
+}
+
+.prdct-rv-inf {
+    gap: 16px;
+    margin: 18px 0 16px 0;
+}
+
+.prdct-rv-inf .nm span {
+    font-weight: 600;
+}
+
+
+.btn-prdct-chrctcts h6,
+.btn-prdct-chrctcts {
+    color: var(--txt-clr-3);
+    font-weight: 600;
+}
+
+#crt-bd-all {
+    padding-bottom: 18px;
+}
+
+#flt {
+    background-color: rgba(34, 34, 34, .8);
+}
+
+#flt-bd {
+    max-width: 448px;
+}
+
+.ordr-slct-prdcs {
+    gap: 16px;
+}
+
+.stngs-sct > .stngs-sct-inpt input {
+    font-size: 14px;
+    border: 1.5px solid var(--bg-clr-4);
+    padding: 13.5px;
+}
+
+.stngs-sct {
+    gap: 8px;
+}
+
+.stngs-sct button.actv {
+    background-color: var(--bg-clr-4);
+}
+
+.stngs-sct button h6 {
+    font-weight: 600;
+}
+
+.stngs-sct button.actv h6 {
+    color: var(--txt-clr-4);
+}
+
+.stngs-sct button h6 {
+    color: var(--txt-clr-3);
+}
+
+.stngs-sct button {
+    border: 1px solid var(--bg-clr-4);
+}
+
+.stngs-sct .btn-slct > div {
+    gap: 12px;
+}
+
+.stngs-sct .btn-slct.actv svg > path {
+    fill: var(--bg-clr-2);
+}
+
+.stngs-sct .btn-slct svg > path {
+    fill: var(--bg-clr-4);
+}
+
+.btn-sbmt {
+    padding: 13px 40px;
+}
+
+.stngs-sct:has(hr) {
+    margin: 6px 0;
+}
+
+.stngs-sct hr {
+    height: 1.4px;
+}
+
+.add-inf button {
+    padding: 4px;
+    margin: 0 0 0 -4px;
+}
+
+.add-inf button:hover h6 {
+    text-decoration: underline;
 }

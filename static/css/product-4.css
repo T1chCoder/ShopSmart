@@ -1,25 +1,40 @@
 .prdct-4 {
     background-color: var(--bg-clr-2);
     max-width: 264px;
+    height: 356px;
 }
 
-.prdct-4 > .pstr {
+.prdct-4>.pstr {
     padding-top: 100%;
 }
 
-.prdct-4 > .inf {
+.prdct-4>.inf {
+    height: 100%;
     padding: 12px;
 }
 
-.prdct-4 > .inf .rtng h6,
-.prdct-4 > .inf .prc h6 {
+.prdct-4>.inf .rtng {
+    margin-bottom: auto !important;
+}
+
+.prdct-4>.inf .rtng h6,
+.prdct-4>.inf .prc h6 {
     color: var(--txt-clr-2);
 }
 
-.prdct-4 > .inf .rtng {
+.prdct-4>.inf .rtng {
     margin-bottom: 12px;
 }
 
-.prdct-4 > .inf .prc h6 {
+.prdct-4>.inf .prc h6 {
     text-decoration: line-through;
+}
+
+.prdct-4 .lk {
+    z-index: 2;
+}
+
+.prdct-4 .lk button,
+.prdct-4 .lk a {
+    padding: 14px;
 }

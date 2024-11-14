@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="rgr wdth-cvr flx-drt-cln bdr-bx bdr-rds-1">
+    <div class="hdr wdth-cvr flx-ctr ptn-rlv">
+        <div class="wdth-cvr flx-ctr flx-lft">
+            <h2>Create account</h2>
+        </div>
+    </div>
+    <div class="bd wdth-cvr flx-drt-cln">
+        <div class="wdth-cvr flx-ctr">
+            <input type="text" required placeholder="Name" class="wdth-cvr bdr-bx bdr-rds-3 flx-ctr" id="rgr-sgn-up-inpt-nm">
+        </div>
+        <div class="wdth-cvr flx-ctr">
+            <input type="text" required placeholder="Email" class="wdth-cvr bdr-bx bdr-rds-3 flx-ctr" id="rgr-sgn-up-inpt-eml">
+        </div>
+        <div class="wdth-cvr flx-ctr">
+            <input type="password" required placeholder="Password" class="wdth-cvr bdr-bx bdr-rds-3 flx-ctr" id="rgr-sgn-up-inpt-psrd">
+        </div>
+        <div class="wdth-cvr flx-ctr">
+            <input type="password" required placeholder="Confirm password" class="wdth-cvr bdr-bx bdr-rds-3 flx-ctr" id="rgr-sgn-up-inpt-cnfrm-psrd">
+        </div>
+        <div class="wdth-cvr flx-ctr">
+            <button type="button" onclick="handleSignUpClick()" class="wdth-cvr bdr-bx bdr-rds-3 flx-ctr" id="rgr-btn-sbmt">
+                <h6>Sign up</h6>
+            </button>
+        </div>
+        <div class="addtnl wdth-cvr flx-drt-cln">
+            <div class="lnk wdth-cvr flx-ctr">
+                <h5>Already have an account?
+                    &nbsp;
+                    <a href="{% url 'log-in' %}" class="flx-ctr hvr-undrln">
+                        <h5>Log in</h5>
+                    </a>
+                </h5>
+            </div>
+        </div>
+        <div class="cprwght wdth-cvr flx-ctr">
+            <small>By using this site, you automatically create or use an existing account on ShopSmart, agree to the
+                processing of personal data and accept the terms&nbsp;<a href="#" class="hvr-undrln">ShopSmart User
+                    Agreement</a>.&nbsp;<a href="#" class="hvr-undrln">Show More</a></small>
+        </div>
+    </div>
+</div>
+{% endblock %}

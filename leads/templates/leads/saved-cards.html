@@ -8,11 +8,11 @@
             <div class="wdth-cvr flx-drt-cln">
                 <div class="wdth-cvr">
                     <div class="wdth-cvr flx-ctr">
-                        <div class="wdth-cvr flx-drt-cln">
+                        <div style="gap: 14px;" class="wdth-cvr flx-drt-cln">
                             <div class="wdth-cvr flx-ctr flx-lft">
                                 <h2>Saved cards</h2>
                             </div>
-                            {% if active_orders.all|count > 0 %}
+                            {% if user.is_authenticated and saved_cards.all|count > 0 %}
                             
                             {% else %}
                             <div style="padding: 104px 124px;" class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
@@ -20,13 +20,12 @@
                                     <h3>It's empty here</h3>
                                 </div>
                                 <div class="txt flx-ctr">
-                                    <span>You don't have any active orders! Use the search to find everything you
-                                        need.</span>
+                                    <span>You haven't saved any cards yet! Add a payment method for quicker and more secure transactions.</span>
                                 </div>
                                 <div class="flx-ctr">
-                                    <a href="/" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">
-                                        <h6>To the main</h6>
-                                    </a>
+                                    <button type="button" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">
+                                        <h6>Add card</h6>
+                                    </button>
                                 </div>
                             </div>
                             {% endif %}

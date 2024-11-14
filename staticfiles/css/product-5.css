@@ -1,0 +1,19 @@
+.prdct-5 {
+    gap: 16px;
+}
+
+.prdct-5 .infs > .inf .vrbl {
+    width: 75px;
+}
+
+.prdct-5 .infs > .inf .vrbl h5 {
+    color: var(--txt-clr-2);
+}
+
+.prdct-5 .infs {
+    margin: 3.5px 0;
+}
+
+.prdct-5 .infs > .inf {
+    margin: 2px 0;
+}

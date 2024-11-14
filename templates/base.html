@@ -30,12 +30,16 @@
     <link rel="stylesheet" href="{% static 'css/product-3.css' %}">
     {% endif %}
     <link rel="stylesheet" href="{% static 'css/product-4.css' %}">
+    {% if page == "orders_page" or page == "active_orders_page" or page == "unpaid_orders_page" %}
+    <link rel="stylesheet" href="{% static 'css/product-5.css' %}">
+    {% endif %}
     {% if page == "product_detail_page" %}
     <link rel="stylesheet" href="{% static 'css/review.css' %}">
     {% endif %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/order.css' %}">
     <link rel="stylesheet" href="{% static 'css/store.css' %}">
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
 
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -50,6 +54,9 @@
 </head>
 
 <body>
+    <div style="padding: 24px; margin: auto 0;" class="mblt-lt bdr-bx cvr flx-ctr">
+        <h2 style="text-align: center;">The website is only designed for personal computers and laptops</h2>
+    </div>
     <div class="ptn-rlv">
         {% include "header.html" %}
         <main class="wdth-cvr flx-drt-cln">
@@ -58,6 +65,157 @@
         </main>
     </div>
     {% include "footer.html" %}
+    {% if not user.is_authenticated %}
+    {% if page == "registration_page" %}
+    <style>
+        html,
+        body,
+        main,
+        div:has(main) {
+            height: 100%;
+        }
+    </style>
+    {% endif %}
+    <script>
+        function handleLoginClick() {
+            var email = document.getElementById("rgr-inpt-eml");
+            var password = document.getElementById("rgr-inpt-psrd");
+
+            var data = {
+                email: email.value,
+                password: password.value,
+            };
+
+            fetch("{% url 'forms:log-in' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                    else {
+                        $(".rgr .bd > div:has(input)").removeAttr("message").removeClass("actv");
+                        if (data.is_email) {
+                            $(".rgr .bd > div:has(input[id='rgr-inpt-eml'])").attr("message", data.message).addClass("actv");
+                        }
+                        if (data.is_password) {
+                            $(".rgr .bd > div:has(input[id='rgr-inpt-psrd'])").attr("message", data.message).addClass("actv");
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+    <script>
+        function handleSignUpClick() {
+            var name = document.getElementById("rgr-sgn-up-inpt-nm");
+            var email = document.getElementById("rgr-sgn-up-inpt-eml");
+            var password = document.getElementById("rgr-sgn-up-inpt-psrd");
+            var confirmPassword = document.getElementById("rgr-sgn-up-inpt-cnfrm-psrd");
+
+            var data = {
+                name: name.value,
+                email: email.value,
+                password: password.value,
+                confirm_password: confirmPassword.value,
+            };
+
+            fetch("{% url 'forms:sign-up' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                    else {
+                        $(".rgr .bd > div:has(input)").removeAttr("message").removeClass("actv");
+                        if (data.is_name) {
+                            $(".rgr .bd > div:has(input[id='rgr-sgn-up-inpt-nm'])").attr("message", data.message).addClass("actv");
+                        }
+                        if (data.is_email) {
+                            $(".rgr .bd > div:has(input[id='rgr-sgn-up-inpt-eml'])").attr("message", data.message).addClass("actv");
+                        }
+                        if (data.is_password) {
+                            $(".rgr .bd > div:has(input[id='rgr-sgn-up-inpt-psrd'])").attr("message", data.message).addClass("actv");
+                        }
+                        if (data.is_password_confirm) {
+                            $(".rgr .bd > div:has(input[id='rgr-sgn-up-inpt-cnfrm-psrd'])").attr("message", data.message).addClass("actv");
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            var logInUrl = "{% url 'log-in' %}";
+            var signUpUrl = "{% url 'sign-up' %}";
+            $("html").on("click", "a", function (e) {
+                if (e.currentTarget.href.includes(logInUrl) || e.currentTarget.href.includes(signUpUrl)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const url = e.currentTarget.href;
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+
+                            const mainContent = doc.querySelector('main');
+
+                            if (mainContent) {
+                                if (!$("#flt > #flt-bd").length) {
+                                    document.documentElement.style.overflow = 'hidden';
+                                    $("body").append(`
+                                        <div class="cvr ptn-fxd tp-cvr lft-cvr flx-ctr" id="flt">
+                                            <div class="wdth-cvr flx-ctr" id="flt-bd">
+                                                <!-- Content will go here -->
+                                            </div>
+                                        </div>
+                                    `);
+                                }
+                                $("#flt > #flt-bd").html(mainContent);
+                            } else {
+                                console.log("No <main> tag found on the page.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching the page:', error);
+                        });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("html").on("click", "#flt", function () {
+                $(this).remove();
+                document.documentElement.style.overflow = '';
+            });
+
+            $("html").on("click", "#flt-bd", function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            });
+        });
+    </script>
+    {% endif %}
 </body>
 
 </html>

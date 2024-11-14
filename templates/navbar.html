@@ -69,7 +69,7 @@
             <hr class="wdth-cvr flx-ctr">
         </div>
         <div class="wdth-cvr flx-ctr">
-            <a href="{% url 'delivery-addresses' %}" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
+            <a href="{% if user.is_authenticated %}{% url 'delivery-addresses' %}{% else %}{% url 'log-in' %}{% endif %}" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
                 <div class="flx-ctr">
                     <span style="--fgr-sz: 22px;" class="fgr">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +85,7 @@
             </a>
         </div>
         <div class="wdth-cvr flx-ctr">
-            <a href="#" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
+            <a href="{% if user.is_authenticated %}{% url 'saved-cards' %}{% else %}{% url 'log-in' %}{% endif %}" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
                 <div class="flx-ctr">
                     <span style="--fgr-sz: 22px;" class="fgr">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +101,7 @@
             </a>
         </div>
         <div class="wdth-cvr flx-ctr">
-            <a href="{% url 'settings' %}" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
+            <a href="{% if user.is_authenticated %}{% url 'settings' %}{% else %}{% url 'log-in' %}{% endif %}" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
                 <div class="flx-ctr">
                     <span style="--fgr-sz: 22px;" class="fgr">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -170,8 +170,9 @@
         <div class="wdth-cvr flx-ctr">
             <hr class="wdth-cvr flx-ctr">
         </div>
-        <div class="wdth-cvr flx-ctr">
-            <a href="{% url 'log-out' %}" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
+        <form method="post" action="{% url 'log-out' %}" class="wdth-cvr flx-ctr">
+            {% csrf_token %}
+            <button type="submit" class="btn wdth-cvr bdr-bx flx-ctr flx-lft">
                 <div class="flx-ctr">
                     <span style="--fgr-sz: 22px;" class="fgr">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -184,7 +185,7 @@
                 <div class="flx-ctr">
                     <span>Log out</span>
                 </div>
-            </a>
-        </div>
+            </button>
+        </form>
     </div>
 </nav>

@@ -5,6 +5,7 @@ html {
     --bg-clr-4: #e85749;
     --bg-clr-5: #7a7d84;
     --bg-clr-6: rgba(54, 55, 64, .12);
+    --bg-clr-7: #bdc2d9;
 }
 
 html {
@@ -18,6 +19,7 @@ html {
 
 html {
     background-color: var(--bg-clr-1);
+    scroll-behavior: smooth;
 }
 
 h1 {
@@ -287,4 +289,37 @@ hr {
 
 .hvr-undrln-nn:hover {
     text-decoration: none !important;
+}
+
+@media (max-width: 1240px) {
+    footer {
+        display: none !important;
+    }
+
+    header {
+        display: none !important;
+    }
+
+    body>div {
+        display: none !important;
+    }
+
+    .mblt-lt {
+        display: flex !important;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    html {
+        background-color: var(--bg-clr-2);
+    }
+}
+
+@media (min-width: 1240px) {
+    .mblt-lt {
+        display: none !important;
+    }
 }

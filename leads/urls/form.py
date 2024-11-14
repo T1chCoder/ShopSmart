@@ -14,4 +14,7 @@ urlpatterns = [
     path("cart/product/remove", RemoveFromCartFormView, name="remove-from-cart"),
     path("cart/product/quantity/change", ChangeCartQuantityFormView, name="change-cart-quantity"),
     path("cart/product/select", SelectCartFormView, name="select-cart"),
+    #Registration
+    path("log-in", LogInFormView, name="log-in"),
+    path("sign-up", SignUpFormView, name="sign-up"),
 ]

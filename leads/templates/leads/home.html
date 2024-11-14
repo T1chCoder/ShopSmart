@@ -2,11 +2,13 @@
 {% load static %}
 {% load my_tags %}
 {% block content %}
+{% if banners.all|count > 0 %}
 <div class="wdth-cvr wrp pdng-1">
     <div class="wdth-cvr flx-ctr">
         {% include "banner.html" %}
     </div>
 </div>
+{% endif %}
 {% if hot_products.all|count > 0 %}
 <div class="wdth-cvr wrp pdng-2">
     <div class="wdth-cvr flx-ctr">

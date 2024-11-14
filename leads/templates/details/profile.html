@@ -10,19 +10,46 @@
                     <div class="pfp bdr-rds-2 wdth-cvr flx-ctr flx-lft">
                         <div class="flx-ctr">
                             <span style="--fgr-sz: 124px;" class="bdr-rds-cvr ovrfl-hdn fgr">
+                                {% if user.photo %}
                                 <img src="{{user.photo.url}}">
+                                {% else %}
+                                <svg width="124" height="124" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_371_2)">
+                                            <path
+                                                d="M22.5 11.75C22.5 17.687 17.687 22.5 11.75 22.5C5.81294 22.5 1 17.687 1 11.75C1 5.81294 5.81294 1 11.75 1C17.687 1 22.5 5.81294 22.5 11.75Z"
+                                                fill="white" stroke="black" stroke-width="1.1" />
+                                            <path
+                                                d="M14.7061 9.06233C14.7061 10.695 13.3825 12.0186 11.7498 12.0186C10.1171 12.0186 8.79358 10.695 8.79358 9.06233C8.79358 7.42964 10.1171 6.10608 11.7498 6.10608C13.3825 6.10608 14.7061 7.42964 14.7061 9.06233Z"
+                                                stroke="black" stroke-width="1.1" />
+                                            <path
+                                                d="M4.76233 19.2751L5.36476 18.2208C6.32173 16.5462 8.10271 15.5126 10.0316 15.5126H13.4681C15.3969 15.5126 17.1779 16.5462 18.1349 18.2208L18.7373 19.2751"
+                                                stroke="black" stroke-width="1.1" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_371_2">
+                                                <rect width="23.5" height="23.5" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                {% endif %}
                             </span>
                         </div>
                         <div class="flx-ctr">
                             <div class="inf flx-drt-cln flx-tp">
                                 <div style="height: 38px;" class="nm flx-ctr flx-lft">
-                                    <h2>{{user.name}} {{user.surname}}</h2>
+                                    <h2>
+                                        {% if user.name %}
+                                        {{user.name}} {% if user.surname %}{{user.surname}}{% endif %}
+                                        {% endif %}
+                                    </h2>
                                 </div>
                                 <div style="height: 16px;" class="eml flx-ctr flx-lft">
-                                    <span>{{user.email}}</span>
+                                    <span>{% if user.email %}{{user.email}}{% endif %}</span>
                                 </div>
                                 <div style="height: 16px;" class="phn flx-ctr flx-lft">
-                                    <span>{{user.phone}}</span>
+                                    <span>{% if user.phone %}{{user.phone}}{% endif %}</span>
                                 </div>
                             </div>
                         </div>

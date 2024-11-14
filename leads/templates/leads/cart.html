@@ -2,8 +2,8 @@
 {% load static %}
 {% load my_tags %}
 {% block content %}
-<div class="wdth-cvr wrp flx-ctr">
-    {% if cart_products.all|count > 0 %}
+<div class="wdth-cvr wrp flx-ctr" id="crt-bd-all">
+    {% if user.is_authenticated and cart_products.all|count > 0 %}
     <div style="gap: 16px; padding-top: 12px;" class="wdth-cvr ptn-rlv flx-ctr flx-tp">
         <div class="flx-cvr flx-ctr">
             <div class="wdth-cvr flx-drt-cln">
@@ -54,24 +54,36 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <a href="{% url 'details:product' cart.product.id %}" class="flx-ctr">
+                                    <a href="{% url 'details:product' cart.product.id %}"
+                                        onclick="navigateToUrl(event);" class="flx-ctr">
                                         <span style="--fgr-sz: 120px;" class="ovrfl-hdn bdr-rds-1 fgr">
                                             <img src="{{cart.product.product_poster.first.photo.url}}">
                                         </span>
                                     </a>
+                                    <script>
+                                        function navigateToUrl(e) {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            const url = e.currentTarget.href;
+                                            if (url) {
+                                                window.location.href = url;
+                                            }
+                                        }
+                                    </script>
                                 </div>
                                 <div class="md flx-ctr flx-cvr flx-tp">
                                     <div class="cvr flx-ctr">
                                         <div class="cvr flx-drt-cln flx-spc-btwn">
                                             <div class="flx-ctr wdth-cvr flx-lft">
-                                                <a href="{% url 'details:product' cart.product.id %}" class="flx-ctr">
-                                                    <span>{{cart.product.title}}</span>
+                                                <a href="{% url 'details:product' cart.product.id %}"
+                                                    onclick="navigateToUrl(event);" class="flx-ctr">
+                                                    <span style="--txt-ln-nbr: 3;" class="txt-ln">{{cart.product.title}}</span>
                                                 </a>
                                             </div>
                                             <div class="wdth-cvr flx-ctr">
                                                 <div class="wdth-cvr flx-spc-btwn flx-tp">
                                                     <div class="str flx-ctr">
-                                                        <h5>Store:&nbsp;<a
+                                                        <h5>Store:&nbsp;<a onclick="navigateToUrl(event);"
                                                                 href="{% url 'details:store' cart.product.store.id %}"
                                                                 class="hvr-undrln flx-ctr">{{cart.product.store.title}}</a>
                                                         </h5>
@@ -80,7 +92,7 @@
                                                         <div class="cnt flx-ctr ovrfl-hdn flx-spc-btwn">
                                                             <div class="flx-ctr">
                                                                 <button type="button" class="flx-ctr"
-                                                                    id="{% if cart.quantity == 1 %}btn-dcrs-crt-qnt-{{cart.id}}-nn{% else %}btn-dcrs-crt-qnt-{{cart.id}}{% endif %}">
+                                                                    id="btn-dcrs-crt-qnt-{{cart.id}}">
                                                                     <span style="--fgr-sz: 16px;" class="fgr">
                                                                         <svg width="16" height="16" viewBox="0 0 16 16"
                                                                             fill="none"
@@ -104,7 +116,7 @@
                                                             </div>
                                                             <div class="flx-ctr">
                                                                 <button type="button" class="flx-ctr"
-                                                                    id="{% if cart.quantity == cart.product.stock %}btn-incr-crt-qnt-{{cart.id}}-nn{% else %}btn-incr-crt-qnt-{{cart.id}}{% endif %}">
+                                                                    id="btn-incr-crt-qnt-{{cart.id}}">
                                                                     <span style="--fgr-sz: 16px;" class="fgr">
                                                                         <svg width="16" height="16" viewBox="0 0 16 16"
                                                                             fill="none"
@@ -154,11 +166,13 @@
                                         </div>
                                         <div class="flx-ctr">
                                             <div class="flx-drt-cln flx-btm">
-                                                <div style="height: 22px;" class="prc flx-ctr">
-                                                    <h3>{{cart.product.price}}</h3>
+                                                <div style="height: 22px;" class="prc flx-ctr"
+                                                    id="crt-prdct-prc-{{cart.id}}">
+                                                    <h3>{{cart.sum}} USD</h3>
                                                 </div>
-                                                <div style="height: 16px;" class="act-prc flx-ctr">
-                                                    <span>{{cart.product.act_price}}</span>
+                                                <div style="height: 16px;" class="act-prc flx-ctr"
+                                                    id="crt-prdct-act-prc-{{cart.id}}">
+                                                    <span>{{cart.total}} USD</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -175,10 +189,17 @@
                                 var buttonSelectAll = document.getElementById("btn-crt-slct-all");
                                 var buttonSelect = document.getElementById("btn-crt-slct-{{cart.id}}")
                                 var cartSelectedCount = document.getElementById("prdcts-slctd-cnt");
+                                var bodyPosters = document.getElementById("crt-slctd-pstrs");
+                                var postersLine = document.getElementById("crt-slctd-pstrs-ln")
+                                var totalText = document.getElementById("crt-tlt-amnt-sm").querySelector("h5");
+                                var priceText = document.getElementById("crt-prdct-prc-{{cart.id}}").querySelector("h3");
+                                var actPriceText = document.getElementById("crt-prdct-act-prc-{{cart.id}}").querySelector("span");
+                                var body = document.getElementById("crt-bd-all");
 
                                 if (buttonRemove) {
                                     buttonRemove.addEventListener('click', function (e) {
                                         e.preventDefault();
+                                        e.stopPropagation();
                                         var data = {
                                             sender_id: "{{user.id}}",
                                             cart_id: "{{cart.id}}",
@@ -193,12 +214,57 @@
                                         })
                                             .then(response => response.json())
                                             .then(data => {
+                                                var posters = data.cart_products_selected_posters;
+                                                if (posters.length > 0) {
+                                                    postersLine.classList.remove("nn");
+                                                    var bodyPoster = function (src) {
+                                                        return `
+                                                    <div class="crt-slctd-pstr flx-ctr">
+                                                        <span style="--fgr-sz: 56px;" class="bdr-rds-3 fgr ovrfl-hdn">
+                                                            <img src="${src}">
+                                                        </span>
+                                                    </div>`
+                                                    };
+                                                    var htmlContent = bodyPoster(posters[0]);
+                                                    for (i = 1; i < posters.length; i++) {
+                                                        htmlContent += bodyPoster(posters[i]);
+                                                    }
+                                                    bodyPosters.innerHTML = htmlContent;
+                                                }
+                                                else {
+                                                    postersLine.classList.add("nn");
+                                                    bodyPosters.innerHTML = "";
+                                                }
                                                 var cart = document.getElementById("crt-{{cart.id}}");
                                                 cart.remove()
-                                                var cartSelected = document.getElementById("crt-slctd-{{cart.id}}");
+                                                var cartSelected = document.getElementById("prdcts-slctd-cnt");
+                                                totalText.textContent = data.total + " USD";
                                                 if (cartSelected) {
-                                                    cartSelectedCount.querySelector("h5").textContent = `Products (${data.carts_selected}):`;
-                                                    cartSelected.remove();
+                                                    if (data.carts_selected == 0) {
+                                                        body.innerHTML = `
+                                                                <div style="padding-top: 12px;" class="wdth-cvr flx-ctr">
+                                                                    <div class="wdth-cvr flx-ctr">
+                                                                        <div class="flx-ctr wdth-cvr">
+                                                                            <div class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
+                                                                                <div class="tlt flx-ctr">
+                                                                                    <h3>There is nothing in the cart</h3>
+                                                                                </div>
+                                                                                <div class="txt flx-ctr">
+                                                                                    <span>Browse the catalog and choose from millions of products with free shipping</span>
+                                                                                </div>
+                                                                                <div class="flx-ctr">
+                                                                                    <a href="{% url 'home' %}" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">
+                                                                                        <h6>To the main</h6>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>`;
+                                                    }
+                                                    else {
+                                                        cartSelectedCount.querySelector("h5").textContent = `Products (${data.carts_selected}):`;
+                                                    }
                                                 }
                                             })
                                             .catch(error => {
@@ -210,6 +276,7 @@
                                 if (buttonIncrease) {
                                     buttonIncrease.addEventListener('click', function (e) {
                                         e.preventDefault();
+                                        e.stopPropagation();
                                         var data = {
                                             sender_id: "{{user.id}}",
                                             cart_id: "{{cart.id}}",
@@ -225,6 +292,9 @@
                                         })
                                             .then(response => response.json())
                                             .then(data => {
+                                                actPriceText.textContent = data.act_sum + " USD";
+                                                priceText.textContent = data.sum + " USD";
+                                                totalText.textContent = data.total + " USD";
                                                 quantityText.textContent = data.quantity;
                                                 if (data.is_max) {
                                                     buttonIncrease.removeAttribute("id");
@@ -245,6 +315,7 @@
                                 if (buttonDecrease) {
                                     buttonDecrease.addEventListener('click', function (e) {
                                         e.preventDefault();
+                                        e.stopPropagation();
                                         var data = {
                                             sender_id: "{{user.id}}",
                                             cart_id: "{{cart.id}}",
@@ -260,6 +331,9 @@
                                         })
                                             .then(response => response.json())
                                             .then(data => {
+                                                actPriceText.textContent = data.act_sum + " USD";
+                                                priceText.textContent = data.sum + " USD";
+                                                totalText.textContent = data.total + " USD";
                                                 quantityText.textContent = data.quantity;
                                                 if (data.is_min) {
                                                     buttonDecrease.removeAttribute("id");
@@ -269,6 +343,60 @@
                                                 if (data.is_max === false && buttonIncreaseNone) {
                                                     buttonIncreaseNone.removeAttribute("id");
                                                     buttonIncreaseNone.setAttribute("id", "btn-incr-crt-qnt-{{cart.id}}");
+                                                }
+                                                if (data.is_deleted) {
+                                                    var cart = document.getElementById("crt-{{cart.id}}");
+                                                    cart.remove()
+                                                    var posters = data.cart_products_selected_posters;
+                                                    if (posters.length > 0) {
+                                                        postersLine.classList.remove("nn");
+                                                        var bodyPoster = function (src) {
+                                                            return `
+                                                    <div class="crt-slctd-pstr flx-ctr">
+                                                        <span style="--fgr-sz: 56px;" class="bdr-rds-3 fgr ovrfl-hdn">
+                                                            <img src="${src}">
+                                                        </span>
+                                                    </div>`
+                                                        };
+                                                        var htmlContent = bodyPoster(posters[0]);
+                                                        for (i = 1; i < posters.length; i++) {
+                                                            htmlContent += bodyPoster(posters[i]);
+                                                        }
+                                                        bodyPosters.innerHTML = htmlContent;
+                                                    }
+                                                    else {
+                                                        postersLine.classList.add("nn");
+                                                        bodyPosters.innerHTML = "";
+                                                    }
+                                                    var cartSelected = document.getElementById("prdcts-slctd-cnt");
+                                                    totalText.textContent = data.total + " USD";
+                                                    if (cartSelected) {
+                                                        if (data.carts_selected == 0) {
+                                                            body.innerHTML = `
+                                                                <div style="padding-top: 12px;" class="wdth-cvr flx-ctr">
+                                                                    <div class="wdth-cvr flx-ctr">
+                                                                        <div class="flx-ctr wdth-cvr">
+                                                                            <div class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
+                                                                                <div class="tlt flx-ctr">
+                                                                                    <h3>There is nothing in the cart</h3>
+                                                                                </div>
+                                                                                <div class="txt flx-ctr">
+                                                                                    <span>Browse the catalog and choose from millions of products with free shipping</span>
+                                                                                </div>
+                                                                                <div class="flx-ctr">
+                                                                                    <a href="{% url 'home' %}" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">
+                                                                                        <h6>To the main</h6>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>`;
+                                                        }
+                                                        else {
+                                                            cartSelectedCount.querySelector("h5").textContent = `Products (${data.carts_selected}):`;
+                                                        }
+                                                    }
                                                 }
                                             })
                                             .catch(error => {
@@ -294,8 +422,38 @@
                                         })
                                             .then(response => response.json())
                                             .then(data => {
+                                                totalText.textContent = data.total + " USD";
                                                 var checkBoxes = $(".chk-bx");
                                                 cartSelectedCount.querySelector("h5").textContent = `Products (${data.selected_products_count}):`;
+                                                var posters = data.cart_products_selected_posters;
+                                                if (posters.length > 0) {
+                                                    postersLine.classList.remove("nn");
+                                                    var bodyPoster = function (src) {
+                                                        return `
+                                                    <div class="crt-slctd-pstr flx-ctr">
+                                                        <span style="--fgr-sz: 56px;" class="bdr-rds-3 fgr ovrfl-hdn">
+                                                            <img src="${src}">
+                                                        </span>
+                                                    </div>`
+                                                    };
+                                                    var htmlContent = bodyPoster(posters[0]);
+                                                    for (i = 1; i < posters.length; i++) {
+                                                        htmlContent += bodyPoster(posters[i]);
+                                                    }
+                                                    bodyPosters.innerHTML = htmlContent;
+                                                    checkBoxes.each(function () {
+                                                        if (data.all_selected) {
+                                                            $(this).addClass("chk-bx-actv");
+                                                        } else {
+                                                            $(this).removeClass("chk-bx-actv");
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    postersLine.classList.add("nn");
+                                                    bodyPosters.innerHTML = "";
+                                                }
+
                                                 checkBoxes.each(function () {
                                                     if (data.all_selected) {
                                                         $(this).addClass("chk-bx-actv");
@@ -328,9 +486,37 @@
                                         })
                                             .then(response => response.json())
                                             .then(data => {
+                                                totalText.textContent = data.total + " USD";
                                                 var checkBox = buttonSelect.querySelector(".chk-bx");
                                                 var checkBoxes = $(".chk-bx");
                                                 cartSelectedCount.querySelector("h5").textContent = `Products (${data.selected_products_count}):`;
+                                                var posters = data.cart_products_selected_posters;
+                                                if (posters.length > 0) {
+                                                    postersLine.classList.remove("nn");
+                                                    var bodyPoster = function (src) {
+                                                        return `
+                                                    <div class="crt-slctd-pstr flx-ctr">
+                                                        <span style="--fgr-sz: 56px;" class="bdr-rds-3 fgr ovrfl-hdn">
+                                                            <img src="${src}">
+                                                        </span>
+                                                    </div>`
+                                                    };
+                                                    var htmlContent = bodyPoster(posters[0]);
+                                                    for (i = 1; i < posters.length; i++) {
+                                                        htmlContent += bodyPoster(posters[i]);
+                                                    }
+                                                    bodyPosters.innerHTML = htmlContent;
+                                                    checkBoxes.each(function () {
+                                                        if (data.all_selected) {
+                                                            $(this).addClass("chk-bx-actv");
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    postersLine.classList.add("nn");
+                                                    bodyPosters.innerHTML = "";
+                                                }
+
                                                 checkBoxes.each(function () {
                                                     if (data.all_selected) {
                                                         $(this).addClass("chk-bx-actv");
@@ -361,9 +547,9 @@
                 <div class="bx-by bx-frm bdr-rds-1 bdr-bx wdth-cvr flx-ctr">
                     <div class="wdth-cvr flx-drt-cln">
                         <div class="wdth-cvr flx-ctr">
-                            <div style="gap: 8px;" class="wdth-cvr flx-ctr flx-lft">
+                            <div style="gap: 8px;" class="wdth-cvr flx-ctr flx-lft" id="crt-slctd-pstrs">
                                 {% for cart in cart_products_selected %}
-                                <div class="flx-ctr" id="crt-slctd-{{cart.id}}">
+                                <div class="crt-slctd-pstr flx-ctr">
                                     <span style="--fgr-sz: 56px;" class="bdr-rds-3 fgr ovrfl-hdn">
                                         <img src="{{cart.product.product_poster.first.photo.url}}">
                                     </span>
@@ -371,7 +557,9 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div style="margin: 10px 0;" class="wdth-cvr flx-ctr">
+                        <div style="margin: 10px 0;"
+                            class="wdth-cvr flx-ctr{% if cart_products_selected.all|count == 0 %} nn{% endif %}"
+                            id="crt-slctd-pstrs-ln">
                             <hr class="wdth-cvr">
                         </div>
                         <div style="margin-bottom: 2px;" class="wdth-cvr flx-ctr">
@@ -379,8 +567,8 @@
                                 <div class="flx-ctr" id="prdcts-slctd-cnt">
                                     <h5>Products ({{cart_products_selected.all|count}}):</h5>
                                 </div>
-                                <div class="flx-ctr">
-                                    <h5>200</h5>
+                                <div class="flx-ctr" id="crt-tlt-amnt-sm">
+                                    <h5>{{total_sum}} USD</h5>
                                 </div>
                             </div>
                         </div>
@@ -390,7 +578,7 @@
                                     <h5>Delivery:</h5>
                                 </div>
                                 <div class="flx-ctr">
-                                    <h5>200</h5>
+                                    <h5>{{deliver_price}} USD</h5>
                                 </div>
                             </div>
                         </div>

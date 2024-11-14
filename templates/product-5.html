@@ -1,0 +1,33 @@
+{% load my_tags %}
+<a href="{% url 'details:product' product.id %}" class="prdct-5 wdth-cvr flx-spc-btwn flx-tp">
+    <div class="flx-ctr">
+        <span style="--fgr-sz: 112px;" class="fgr ovrfl-hdn bdr-rds-1">
+            <img src="{{product.product_poster.first.photo.url}}">
+        </span>
+    </div>
+    <div class="flx-cvr flx-ctr">
+        <div class="wdth-cvr flx-drt-cln">
+            <div class="nm wdth-cvr flx-ctr flx-lft">
+                <span style="--txt-ln-nbr: 2;" class="txt-ln">{{product.title}}</span>
+            </div>
+            <div class="infs wdth-cvr flx-drt-cln">
+                <div class="inf wdth-cvr flx-ctr flx-lft">
+                    <div class="vrbl flx-ctr flx-lft">
+                        <h5>Amount:</h5>
+                    </div>
+                    <div class="vlb flx-ctr flx-lft flx-cvr">
+                        <h5>{{order_product.quantity}}</h5>
+                    </div>
+                </div>
+                <div class="inf wdth-cvr flx-ctr flx-lft">
+                    <div class="vrbl flx-ctr flx-lft">
+                        <h5>Price:</h5>
+                    </div>
+                    <div class="vlb flx-ctr flx-lft flx-cvr">
+                        <h5>{{order_product.sum}} USD</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>

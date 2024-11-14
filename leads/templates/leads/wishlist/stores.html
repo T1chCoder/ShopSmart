@@ -12,7 +12,7 @@
                             <div class="wdth-cvr flx-ctr flx-lft">
                                 <h2>Favorite stores</h2>
                             </div>
-                            {% if favorite_stores.all|count > 0 %}
+                            {% if user.is_authenticated and favorite_stores.all|count > 0 %}
                             <div class="wdth-cvr flx-ctr">
                                 <ul class="rcm-prdct-lst-3 wdth-cvr flx-spc-btwn">
                                     {% for wishlist in favorite_stores %}
@@ -30,7 +30,7 @@
                                     <h3>It's empty here</h3>
                                 </div>
                                 <div class="txt flx-ctr">
-                                    <span>You are not subscribed to any shops yet. Add the stores you like to favourites.</span>
+                                    <span>You are not subscribed to any shops yet! Add the stores you like to favourites.</span>
                                 </div>
                                 <div class="flx-ctr">
                                     <a href="/" class="btn-hm flx-ctr bdr-rds-3 bdr-bx">

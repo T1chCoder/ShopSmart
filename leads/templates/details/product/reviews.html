@@ -1,0 +1,678 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<div class="wdth-cvr wrp flx-ctr">
+    <div style="gap: 16px;" class="wdth-cvr ptn-rlv flx-ctr flx-tp">
+        <div class="flx-cvr flx-ctr">
+            <div class="wdth-cvr flx-drt-cln">
+                <a href="{% url 'details:product' product_detail.id %}" class="prdct-rv-inf wdth-cvr flx-ctr flx-lft flt-tp">
+                    <div class="flx-ctr prdc-pstr-rv">
+                        <div class="wdth-cvr pdng-tp-cvr ptn-rlv flx-ctr">
+                            <div class="ptn-ablt tp-cvr lft-cvr cvr">
+                                <span class="cvr flx-ctr ovrfl-hdn bdr-rds-3">
+                                    <img src="{{product_detail.product_poster.first.photo.url}}">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flx-cvr flx-ctr">
+                        <div style="gap: 6px;" class="wdth-cvr flx-drt-cln flx-tp">
+                            <div class="nm wdth-cvr flx-ctr flx-lft">
+                                <span style="--txt-ln-nbr: 3;" class="txt-ln">{{product_detail.title}}</span>
+                            </div>
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <h5 class="flx-ctr">
+                                    <div class="flx-ctr">
+                                        <span style="--fgr-sz: 18px;" class="fgr">
+                                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_32_1313)">
+                                                    <path d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z" fill="var(--bg-clr-4)"></path>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_32_1313">
+                                                        <rect width="18" height="18" fill="white" transform="translate(0.5)"></rect>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div style="margin-left: 1px;" class="flx-ctr">
+                                        <h5 style="color: var(--txt-clr-2);">{{rating}}</h5>
+                                    </div>
+                                    {% with count=product_detail.review_product.all|count %}
+                                    &nbsp; {{count}} review{% if count > 1 %}s{% endif %}
+                                    {% endwith %}
+                                </h5>
+
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="prdct-rtng wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-drt-cln">
+                        <div class="estm pdng-1 wdth-cvr flx-ctr">
+                            <div style="margin-top: -8px;" class="wdth-cvr flx-btm nn" id="prdct-dscrpt">
+                                <span>{{product_detail.description}}</span>
+                            </div>
+                            <div class="prdct-inf wdth-cvr flx-ctr nn" id="prdct-chrctcts">
+                                <section style="gap: 4px; margin-top: -8px;" class="wdth-cvr flx-drt-cln" id="charachteristics">
+                                    {% for attribute in product_detail.product_attribute.all %}
+                                    <div style="gap: 12px;" class="prdct-attrbt wdth-cvr flx-spc-btwn">
+                                        <div class="attr flx-ctr flx-btm">
+                                            <h6>{{attribute.get_variable_display}}</h6>
+                                        </div>
+                                        <div class="flx-cvr flx-ctr flx-btm">
+                                            <div style="background-color: transparent; margin: 0;"
+                                                class="ln ptn-rlv wdth-cvr flx-ctr"></div>
+                                        </div>
+                                        <div class="val flx-ctr flx-btm">
+                                            <h6>{{attribute.value}}</h6>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <div style="margin-top: 4px;" class="wdth-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr">
+                                            <a href="#charachteristics"
+                                                class="btn-shw-all-rvs bdr-bx bdr-rds-cvr wdth-cvr flx-ctr nn"
+                                                id="btn-shw-all-prdct-attrbt">
+                                                <span>Show all</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    var description = $("#prdct-dscrpt");
+                                    var charachteristics = $("#prdct-chrctcts");
+                                    var rating = $("#prdct-rtng");
+                                    var reviews = $("#prdct-rvs");
+                                    var buttonShowAllAttributes = $("#btn-shw-all-prdct-attrbt");
+                                    var attribute = $(".prdct-attrbt");
+                                    buttonShowAllAttributes.click(function () {
+                                        if ($(this).hasClass("btn-actv")) {
+                                            for (i = 0; i < attribute.length; i++) {
+                                                if (i > 8) {
+                                                    $(attribute[i]).addClass("nn");
+                                                }
+                                            }
+                                            buttonShowAllAttributes.find("span").text("Show all");
+                                            buttonShowAllAttributes.removeClass("btn-actv");
+                                        }
+                                        else {
+                                            buttonShowAllAttributes.find("span").text("Show less");
+                                            attribute.removeClass("nn");
+                                            buttonShowAllAttributes.addClass("btn-actv");
+                                        }
+                                    });
+                                    $("#btn-prdct-rvs").click(function () {
+                                        $(".sct-prdct-btn").removeClass("actv");
+                                        $("#btn-prdct-rvs").addClass("actv");
+                                        reviews.removeClass("nn");
+                                        rating.removeClass("nn");
+                                        charachteristics.addClass("nn");
+                                        description.addClass("nn");
+                                    });
+                                    $("#btn-prdct-dscrpt").click(function () {
+                                        $(".sct-prdct-btn").removeClass("actv");
+                                        $("#btn-prdct-dscrpt").addClass("actv");
+                                        reviews.addClass("nn");
+                                        rating.addClass("nn");
+                                        charachteristics.addClass("nn");
+                                        description.removeClass("nn");
+                                    });
+                                    $("#btn-shw-all-prdct-inf").click(function () {
+                                        $(".sct-prdct-btn").removeClass("actv");
+                                        $("#btn-prdct-chrctcts").addClass("actv");
+                                        for (i = 0; i < attribute.length; i++) {
+                                            if (i > 8) {
+                                                $(attribute[i]).addClass("nn");
+                                            }
+                                        }
+                                        if (attribute.length > 8) {
+                                            buttonShowAllAttributes.removeClass("nn");
+                                        }
+                                        reviews.addClass("nn");
+                                        rating.addClass("nn");
+                                        charachteristics.removeClass("nn");
+                                        description.addClass("nn");
+                                    });
+
+                                    $("#btn-prdct-chrctcts").click(function () {
+                                        $(".sct-prdct-btn").removeClass("actv");
+                                        $("#btn-prdct-chrctcts").addClass("actv");
+                                        for (i = 0; i < attribute.length; i++) {
+                                            if (i > 8) {
+                                                $(attribute[i]).addClass("nn");
+                                            }
+                                        }
+                                        if (attribute.length > 8) {
+                                            buttonShowAllAttributes.removeClass("nn");
+                                        }
+                                        reviews.addClass("nn");
+                                        rating.addClass("nn");
+                                        charachteristics.removeClass("nn");
+                                        description.addClass("nn");
+                                    });
+                                });
+                            </script>
+                            <div style="gap: 16px;" class="wdth-cvr flx-ctr flx-tp" id="prdct-rtng">
+                                <div style="width: calc(135px - 22px);" class="flx-ctr flx-lft">
+                                    <div class="flx-drt-cln">
+                                        <div style="height: 56px; margin-bottom: 6px;" class="flx-ctr">
+                                            <h1>{{rating}}</h1>
+                                        </div>
+                                        <div class="flx-ctr">
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    {% if rating > 0 and 1 > rating %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 1 %}var(--bg-clr-4){% elif 0 >= rating %}var(--bg-clr-7){% endif %}" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    {% if rating > 1 and 2 > rating %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 2 %}var(--bg-clr-4){% elif 1 >= rating %}var(--bg-clr-7){% endif %}" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    {% if rating > 2 and 3 > rating %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 3 %}var(--bg-clr-4){% elif 2 >= rating %}var(--bg-clr-7){% endif %}" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    {% if rating > 3 and 4 > rating %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating >= 4 %}var(--bg-clr-4){% elif 3 >= rating %}var(--bg-clr-7){% endif %}" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="flx-ctr">
+                                                <span style="--fgr-sz: 18px;" class="fgr">
+                                                    {% if rating > 4 and 5 > rating %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_375_2" style="mask-type:luminance"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="19"
+                                                            height="18">
+                                                            <path d="M18.5 0H0.5V18H18.5V0Z" fill="white" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_375_2)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="var(--bg-clr-7)" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525V1.5Z"
+                                                                fill="var(--bg-clr-4)" />
+                                                        </g>
+                                                    </svg>
+                                                    {% else %}
+                                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_32_1313)">
+                                                            <path
+                                                                d="M9.5 12.9525L14.135 15.75L12.905 10.4775L17 6.93L11.6075 6.4725L9.5 1.5L7.3925 6.4725L2 6.93L6.095 10.4775L4.865 15.75L9.5 12.9525Z"
+                                                                fill="{% if rating == 5 %}var(--bg-clr-4){% elif 4 >= rating %}var(--bg-clr-7){% endif %}" />
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_32_1313">
+                                                                <rect width="18" height="18" fill="white"
+                                                                    transform="translate(0.5)" />
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="rvs-cnt flx-ctr">
+                                            {% with count=reviews.all|count %}
+                                            <h6>{{count}} review{% if count > 1 %}s{% endif %}</h6>
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flx-cvr flx-ctr">
+                                    <div style="gap: 16px;" class="wdth-cvr flx-ctr">
+                                        <div class="flx-ctr">
+                                            <div class="rtng-gp flx-ctr flx-drt-cln">
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>5</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>4</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>3</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>2</h6>
+                                                </div>
+                                                <div class="rtn-txt flx-ctr">
+                                                    <h6>1</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flx-ctr flx-cvr">
+                                            <div class="rtng-gp wdth-cvr flx-drt-cln">
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: {{rating_5}};"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: {{rating_4}};"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: {{rating_3}};"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: {{rating_2}};"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="wdth-cvr flx-ctr">
+                                                    <div class="ln wdth-cvr flx-ctr flx-lft bdr-rds-cvr">
+                                                        <span style="width: {{rating_1}};"
+                                                            class="ln-in flx-ctr hgt-cvr bdr-rds-cvr"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prdct-rvs wdth-cvr flx-ctr" id="prdct-rvs">
+                    <div class="wdth-cvr flx-ctr">
+                        <ul class="wdth-cvr flx-drt-cln">
+                            {% for review in product_detail.review_product.all %}
+                            <li class="wdth-cvr flx-ctr">
+                                {% include "review-1.html" %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 328px; top: calc(80px + 18px); margin-bottom: 18px;" class="ptn-stk right-cvr flx-ctr">
+            <div style="gap: 12px;" class="wdth-cvr flx-drt-cln">
+                <div class="bx-by bx-frm bdr-rds-1 bdr-bx wdth-cvr flx-ctr">
+                    <div class="wdth-cvr flx-drt-cln">
+                        <div class="prc wdth-cvr flx-ctr flx-lft">
+                            <h3>{{product_detail.price}} USD</h3>
+                        </div>
+                        <div class="act-prc wdth-cvr flx-ctr flx-lft">
+                            <h6>{{product_detail.act_price}} USD</h6>
+                        </div>
+                        <div style="gap: 6px;" class="btns wdth-cvr flx-spc-btwn">
+                            <div class="flx-cvr flx-ctr">
+                                <div class="wdth-cvr flx-ctr">
+                                    <button type="button"
+                                        class="wdth-cvr flx-ctr bdr-bx bdr-rds-3 {% if cart_product %}nn{% endif %}"
+                                        id="btn-add-to-crt">
+                                        <h6>Add to Cart</h6>
+                                    </button>
+                                    <a href="{% url 'cart' %}"
+                                        class="wdth-cvr flx-ctr bdr-bx bdr-rds-3 {% if not cart_product %}nn{% endif %}"
+                                        id="btn-go-to-crt">
+                                        <h6>Cart</h6>
+                                    </a>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            var buttonAdd = document.getElementById("btn-add-to-crt");
+                                            var quantitySelection = document.getElementById("slct-crt-qnt");
+                                            var goCart = document.getElementById("btn-go-to-crt");
+                                            var buttonIncrease = document.getElementById("btn-incr-crt-qnt");
+                                            var buttonDecrease = document.getElementById("btn-dcrs-crt-qnt");
+                                            var cart_id = "{% if cart_product %}{{cart_product.id}}{% endif %}";
+                                            var quantityText = document.getElementById("crt-qnt").querySelector("span")
+
+                                            if (buttonIncrease) {
+                                                buttonIncrease.addEventListener('click', function (e) {
+                                                    e.preventDefault();
+                                                    var data = {
+                                                        sender_id: "{{user.id}}",
+                                                        cart_id: cart_id,
+                                                        is_plus: true,
+                                                    };
+                                                    fetch("{% url 'forms:change-cart-quantity' %}", {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'X-CSRFToken': '{{csrf_token}}',
+                                                        },
+                                                        body: JSON.stringify(data)
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            quantityText.textContent = data.quantity;
+                                                            if (data.is_max) {
+                                                                buttonIncrease.removeAttribute("id");
+                                                                buttonIncrease.setAttribute("id", "btn-incr-crt-qnt-nn");
+                                                            }
+                                                            buttonDecreaseNone = document.getElementById("btn-dcrs-crt-qnt-nn");
+                                                            if (data.is_max === false && buttonDecreaseNone) {
+                                                                buttonDecreaseNone.removeAttribute("id");
+                                                                buttonDecreaseNone.setAttribute("id", "btn-dcrs-crt-qnt");
+                                                            }
+                                                        })
+                                                        .catch(error => {
+                                                            console.error("Error:", error);
+                                                        });
+                                                });
+                                            }
+
+                                            if (buttonDecrease) {
+                                                buttonDecrease.addEventListener('click', function (e) {
+                                                    e.preventDefault();
+                                                    var data = {
+                                                        sender_id: "{{user.id}}",
+                                                        cart_id: cart_id,
+                                                        is_plus: false,
+                                                    };
+                                                    fetch("{% url 'forms:change-cart-quantity' %}", {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'X-CSRFToken': '{{csrf_token}}',
+                                                        },
+                                                        body: JSON.stringify(data)
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            quantityText.textContent = data.quantity;
+                                                            if (data.is_min) {
+                                                                buttonDecrease.removeAttribute("id");
+                                                                buttonDecrease.setAttribute("id", "btn-dcrs-crt-qnt-nn");
+                                                            }
+                                                            buttonIncreaseNone = document.getElementById("btn-incrs-crt-qnt-nn");
+                                                            if (data.is_max === false && buttonIncreaseNone) {
+                                                                buttonIncreaseNone.removeAttribute("id");
+                                                                buttonIncreaseNone.setAttribute("id", "btn-incr-crt-qnt");
+                                                            }
+                                                            if (data.is_deleted) {
+                                                                buttonAdd.classList.remove("nn");
+                                                                quantitySelection.classList.add("nn");
+                                                                goCart.classList.add("nn");
+                                                                cart_id = ""
+                                                            }
+                                                        })
+                                                        .catch(error => {
+                                                            console.error("Error:", error);
+                                                        });
+                                                });
+                                            }
+
+                                            if (buttonAdd) {
+                                                buttonAdd.addEventListener('click', function (e) {
+                                                    e.preventDefault();
+                                                    var data = {
+                                                        sender_id: "{{user.id}}",
+                                                        product_id: "{{product_detail.id}}",
+                                                        quantity: 1,
+                                                    };
+                                                    fetch("{% url 'forms:add-to-cart' %}", {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'X-CSRFToken': '{{csrf_token}}',
+                                                        },
+                                                        body: JSON.stringify(data)
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            buttonAdd.classList.add("nn");
+                                                            quantitySelection.classList.remove("nn");
+                                                            goCart.classList.remove("nn");
+                                                            cart_id = data.cart_id
+                                                        })
+                                                        .catch(error => {
+                                                            console.error("Error:", error);
+                                                        });
+                                                });
+                                            }
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="flx-cvr hgt-cvr {% if not cart_product %}nn{% endif %}" id="slct-crt-qnt">
+                                <div class="wdth-cvr hgt-cvr flx-ctr">
+                                    <div class="cnt cvr flx-ctr bdr-rds-3 ovrfl-hdn flx-spc-btwn">
+                                        <div class="flx-ctr">
+                                            <button type="button" class="flx-ctr" id="btn-dcrs-crt-qnt">
+                                                <span style="--fgr-sz: 16px;" class="fgr">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_104_2980)">
+                                                            <rect x="1" y="7" width="14" height="2" rx="1" fill="white">
+                                                            </rect>
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_104_2980">
+                                                                <rect width="16" height="16" fill="white"></rect>
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div style="height: calc(46.5px - 2px * 2);" class="flx-cvr txt hgt-cvr flx-ctr"
+                                            id="crt-qnt">
+                                            <span>
+                                                {% if cart_product %}{{cart_product.quantity}}{% else %}1{% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="flx-ctr">
+                                            <button type="button" class="flx-ctr" id="btn-incr-crt-qnt">
+                                                <span style="--fgr-sz: 16px;" class="fgr">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_104_2980)">
+                                                            <rect x="1" y="7" width="14" height="2" rx="1" fill="white">
+                                                            </rect>
+                                                            <rect x="7" y="15" width="14" height="2" rx="1"
+                                                                transform="rotate(-90 7 15)" fill="white"></rect>
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_104_2980">
+                                                                <rect width="16" height="16" fill="white"></rect>
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flx-cvr flx-ctr nn">
+                                <div class="wdth-cvr flx-ctr">
+                                    <button type="button" class="wdth-cvr flx-ctr bdr-bx bdr-rds-3">
+                                        <h6>Buy now</h6>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wdth-cvr flx-ctr">
+                            <hr class="wdth-cvr">
+                        </div>
+                        <div class="inf wdth-cvr flx-ctr">
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <text>75-Day Buyer Protection</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'details:store' product_detail.store.id %}"
+                    class="bx-str bx-frm bdr-rds-1 bdr-bx wdth-cvr flx-drt-cln">
+                    <div class="wdth-cvr flx-ctr">
+                        <div style="gap: 5.5px;" class="wdth-cvr flx-ctr flx-lft">
+                            <div class="flx-ctr">
+                                <span style="--fgr-sz: 40px;" class="fgr ovrfl-hdn bdr-rds-3">
+                                    <img src="{{product_detail.store.photo.url}}">
+                                </span>
+                            </div>
+                            <div class="flx-ctr">
+                                <div class="flx-drt-cln flx-tp">
+                                    <div class="tlt flx-ctr">
+                                        <h6>{{product_detail.store.title}}</h6>
+                                    </div>
+                                    {% with subscribers_count=product_detail.store.subscribers %}
+                                    {% if store_rating > 0 or subscribers_count > 0 %}
+                                    <div class="inf flx-ctr">
+                                        <text>{{store_rating}}% seller's rating
+                                            {% if subscribers_count > 0 %}
+                                            &nbsp;<span style="font-size: 6px;">•</span>&nbsp;
+                                            {{count}} subscriber{% if subscribers_count > 1 %}s{% endif %}
+                                            {% endif %}
+                                        </text>
+                                    </div>
+                                    {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

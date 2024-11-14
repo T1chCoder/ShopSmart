@@ -13,6 +13,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework import viewsets
+from django.db.models import Q
+from django.db.models import Avg
+from django.contrib.auth import authenticate, login
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
+
+email_validator = EmailValidator()
 
 class DefaultView(View):
     page = None
@@ -29,6 +36,10 @@ class DefaultView(View):
             user_profile = UserProfile.objects.get(user=self.request.user)
             context["user_profile"] = user_profile 
             self.user_profile = user_profile
+            context["cart_products_id"] = UserProfileCart.objects.filter(user_profile=user_profile).values_list("product__id", flat=True)
+        else:
+            context["cart_products_id"] = []
+        context["wihslist_products"] = UserProfileFavorite.objects.filter(user_profile=self.user_profile, product__isnull=False).values_list("product__id", flat=True)
 
         return context
     
@@ -65,10 +76,12 @@ class CartView(DefaultView, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = Product.objects.all().filter(is_active=True)
-            cart_products = UserProfileCart.objects.all().filter(user_profile=self.user_profile)
-        context["recommended_products"] = products.exclude(id__in=cart_products.values_list("id", flat=True))
+        cart_products = UserProfileCart.objects.filter(user_profile=self.user_profile)
+        context["recommended_products"] = products.exclude(id__in=cart_products.values_list("product__id", flat=True))
         products_selected = []
+        total_sum = Decimal(0.00)
         for cart in cart_products:
+            total_sum += cart.product.price * cart.quantity
             if cart.is_selected:
                 products_selected.append(1)
             else:
@@ -78,6 +91,8 @@ class CartView(DefaultView, ListView):
         else:
             context["all_selected"] = True
         context["cart_products_selected"] = cart_products.filter(is_selected=True)
+        context["deliver_price"] = 200.99
+        context["total_sum"] = total_sum
 
         return context
     
@@ -99,7 +114,9 @@ class ActiveOrdersView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return Order.objects.filter(customer=self.request.user)
+        if self.request.user.is_authenticated:
+            return Order.objects.filter(customer=self.request.user, is_cancelled=False)
+        return Order.objects.none()
 
 class UnpaidOrdersView(DefaultView, ListView):
     model = Order
@@ -113,7 +130,9 @@ class UnpaidOrdersView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return Order.objects.filter(customer=self.request.user)
+        if self.request.user.is_authenticated:
+            return Order.objects.filter(customer=self.request.user, is_cancelled=False, is_paid=False)
+        return Order.objects.none()
 
 class AllOrdersView(DefaultView, ListView):
     model = Order
@@ -127,7 +146,9 @@ class AllOrdersView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return Order.objects.filter(customer=self.request.user)
+        if self.request.user.is_authenticated:
+            return Order.objects.filter(customer=self.request.user)
+        return Order.objects.none()
 
 class WishlistProductsView(DefaultView, ListView):
     model = UserProfileFavorite
@@ -141,7 +162,10 @@ class WishlistProductsView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return UserProfileFavorite.objects.filter(product__isnull=False)
+        if self.request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            return UserProfileFavorite.objects.filter(user_profile=user_profile, product__isnull=False)
+        return UserProfileFavorite.objects.none()
 
 class WishlistStoresView(DefaultView, ListView):
     model = UserProfileFavorite
@@ -151,11 +175,16 @@ class WishlistStoresView(DefaultView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context["subscribed_stores_id"] = UserProfileFavorite.objects.filter(user_profile=self.user_profile, store__isnull=False).values_list("store__id", flat=True)
 
         return context
     
     def get_queryset(self):
-        return UserProfileFavorite.objects.filter(store__isnull=False)
+        if self.request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            return UserProfileFavorite.objects.filter(user_profile=user_profile, store__isnull=False)
+        return UserProfileFavorite.objects.none()
 
 class SettingsView(DefaultView, TemplateView):
     template_name = "leads/settings.html"
@@ -178,11 +207,13 @@ class AllReviewsView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        user_profile = UserProfile.objects.get(user=self.request.user)
-        my_reviews = Review.objects.filter(sender=self.request.user).values_list("id", flat=True)
-        liked_reviews = UserProfileFavorite.objects.filter(user_profile=user_profile, review__isnull=False).values_list("review__id", flat=True)
-        review_ids = list(my_reviews) + list(liked_reviews)
-        return Review.objects.filter(id__in=review_ids)
+        if self.request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            my_reviews = Review.objects.filter(sender=self.request.user).values_list("id", flat=True)
+            liked_reviews = UserProfileFavorite.objects.filter(user_profile=user_profile, review__isnull=False).values_list("review__id", flat=True)
+            review_ids = list(my_reviews) + list(liked_reviews)
+            return Review.objects.filter(id__in=review_ids)
+        return Review.objects.none()
     
 class MyReviewsView(DefaultView, ListView):
     model = Review
@@ -196,8 +227,10 @@ class MyReviewsView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return Review.objects.filter(sender=self.request.user)
-    
+        if self.request.user.is_authenticated:
+            return Review.objects.filter(sender=self.request.user)
+        return Review.objects.none()
+
 class LikedReviewsView(DefaultView, ListView):
     model = Review
     context_object_name = "liked_reviews"
@@ -210,9 +243,11 @@ class LikedReviewsView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        user_profile = UserProfile.objects.get(user=self.request.user)
-        liked_reviews = UserProfileFavorite.objects.filter(user_profile=user_profile, review__isnull=False).values_list("review__id", flat=True)
-        return Review.objects.filter(id__in=liked_reviews)
+        if self.request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            liked_reviews = UserProfileFavorite.objects.filter(user_profile=user_profile, review__isnull=False).values_list("review__id", flat=True)
+            return Review.objects.filter(id__in=liked_reviews)
+        return Review.objects.none()
 
 class DeliveryAddressesView(DefaultView, ListView):
     model = UserProfileDeliveryAddress
@@ -226,7 +261,9 @@ class DeliveryAddressesView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return UserProfileDeliveryAddress.objects.filter(user_profile=self.user_profile)
+        if self.request.user.is_authenticated:
+            return UserProfileDeliveryAddress.objects.filter(user_profile=self.user_profile)
+        return UserProfileDeliveryAddress.objects.none()
 
 class SavedCardsView(DefaultView, ListView):
     model = UserProfileSavedCard
@@ -240,7 +277,29 @@ class SavedCardsView(DefaultView, ListView):
         return context
     
     def get_queryset(self):
-        return UserProfileSavedCard.objects.filter(user_profile=self.user_profile)
+        if self.request.user.is_authenticated:
+            return UserProfileSavedCard.objects.filter(user_profile=self.user_profile)
+        return UserProfileSavedCard.objects.none()
+
+class SearchView(DefaultView, TemplateView):
+    template_name = "leads/search/index.html"
+    page = "search_page"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+class SearchResultView(DefaultView, ListView):
+    model = Product
+    context_object_name = "searched_products"
+    template_name = "leads/search/result.html"
+    page = "search_result_page"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
 
 #Detail-Views
 class ProfileDetailView(DefaultView, DetailView):
@@ -252,10 +311,11 @@ class ProfileDetailView(DefaultView, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        seen_products = UserProfileHistory.objects.filter(product__isnull=False, product__is_active=True).order_by("-created")
-        products = Product.objects.filter(is_active=True)
-        context["seen_products"] = seen_products
-        context["recommended_products"] = products.exclude(id__in=seen_products.values_list("product__id", flat=True))
+        if self.request.user.is_authenticated:
+            seen_products = UserProfileHistory.objects.filter(user_profile=self.user_profile, product__isnull=False, product__is_active=True).order_by("-created")
+            products = Product.objects.filter(is_active=True)
+            context["seen_products"] = seen_products
+            context["recommended_products"] = products.exclude(id__in=seen_products.values_list("product__id", flat=True))
 
         return context
     
@@ -263,7 +323,7 @@ class ProductDetailView(DefaultView, DetailView):
     model = Product
     slug_field = "id"
     context_object_name = "product_detail"
-    template_name = "details/product.html"
+    template_name = "details/product/index.html"
     page = "product_detail_page"
 
     def get_context_data(self, **kwargs):
@@ -279,10 +339,103 @@ class ProductDetailView(DefaultView, DetailView):
                 context["is_liked"] = False
             context["user_profile_wishlist_reviews"] = UserProfileFavorite.objects.all().filter(user_profile=self.user_profile).exclude(review__isnull=True).values_list('review', flat=True)
 
+        context["cart_product"] = UserProfileCart.objects.filter(user_profile=self.user_profile, product=self.object).first()
         products = Product.objects.all().filter(is_active=True)
         context["recommended_products"] = products.exclude(id=self.object.id)
         context["current_date"] = datetime.now().date()
+        reviews = Review.objects.filter(product=self.object, is_active=True)
+        context["reviews"] = reviews
+        reviews_rating = reviews.values_list("rating", flat=True)
+        average_rating = reviews_rating.aggregate(Avg('rating'))['rating__avg']
+        if average_rating is not None:
+            rounded_rating = round(average_rating * 2) / 2
+        else:
+            rounded_rating = 0
+        context["rating"] = rounded_rating
 
+        for i in range(1, 5+1):
+            reviews_count = reviews.count()
+            filtered_reviews_count = reviews.filter(rating=i).count()
+            if reviews_count > 0:
+                context[f"rating_{i}"] = f"{filtered_reviews_count * 100 / reviews_count}%"
+            else:
+                context[f"rating_{i}"] = 0
+        
+        delivered_orders_id = Order.objects.filter(is_paid=True, is_cancelled=False, is_delivered=True).values_list("id", flat=True)
+        context["sold"] = OrderProduct.objects.filter(order__id__in=delivered_orders_id, product=self.object).count()
+        
+        reviews_store_rating = Review.objects.filter(product__store=self.object.store, is_active=True).values_list("rating", flat=True)
+        average_store_rating = reviews_store_rating.aggregate(Avg('rating'))['rating__avg']
+        
+        if average_store_rating is not None:
+            average_store_rating = min(max(average_store_rating, 0), 5)
+            average_store_rating *= 20
+            rounded_store_rating = round(average_store_rating, 1)
+            if rounded_store_rating.is_integer():
+                rounded_store_rating = int(rounded_store_rating)
+        else:
+            rounded_store_rating = 0
+        context["store_rating"] = rounded_store_rating
+
+        return context
+
+class ProductReviewsDetailView(DefaultView, DetailView):
+    model = Product
+    slug_field = "id"
+    context_object_name = "product_detail"
+    template_name = "details/product/reviews.html"
+    page = "product_reviews_detail_page"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reviews"] = Review.objects.filter(product=self.object)
+
+        if self.request.user.is_authenticated:
+            UserProfileHistory.objects.filter(user_profile=self.user_profile, product=self.object).delete()
+            history = UserProfileHistory(user_profile=self.user_profile, product=self.object)
+            history.save()
+            wishlist =  UserProfileFavorite.objects.all().filter(user_profile=self.user_profile, product=self.object).first()
+            if wishlist:
+                context["is_liked"] = True
+            else:
+                context["is_liked"] = False
+            context["user_profile_wishlist_reviews"] = UserProfileFavorite.objects.all().filter(user_profile=self.user_profile).exclude(review__isnull=True).values_list('review', flat=True)
+
+        context["cart_product"] = UserProfileCart.objects.filter(user_profile=self.user_profile, product=self.object).first()
+        products = Product.objects.all().filter(is_active=True)
+        context["recommended_products"] = products.exclude(id=self.object.id)
+        context["current_date"] = datetime.now().date()
+        reviews = Review.objects.filter(product=self.object, is_active=True)
+        context["reviews"] = reviews
+        reviews_rating = reviews.values_list("rating", flat=True)
+        average_rating = reviews_rating.aggregate(Avg('rating'))['rating__avg']
+        if average_rating is not None:
+            rounded_rating = round(average_rating * 2) / 2
+        else:
+            rounded_rating = 0
+        context["rating"] = rounded_rating
+
+        for i in range(1, 5+1):
+            reviews_count = reviews.count()
+            filtered_reviews_count = reviews.filter(rating=i).count()
+            context[f"rating_{i}"] = f"{filtered_reviews_count * 100 / reviews_count}%"
+        
+        delivered_orders_id = Order.objects.filter(is_paid=True, is_cancelled=False, is_delivered=True).values_list("id", flat=True)
+        context["sold"] = OrderProduct.objects.filter(order__id__in=delivered_orders_id, product=self.object).count()
+        
+        reviews_store_rating = Review.objects.filter(product__store=self.object.store, is_active=True).values_list("rating", flat=True)
+        average_store_rating = reviews_store_rating.aggregate(Avg('rating'))['rating__avg']
+        
+        if average_store_rating is not None:
+            average_store_rating = min(max(average_store_rating, 0), 5)
+            average_store_rating *= 20
+            rounded_store_rating = round(average_store_rating, 1)
+            if rounded_store_rating.is_integer():
+                rounded_store_rating = int(rounded_store_rating)
+        else:
+            rounded_store_rating = 0
+        context["store_rating"] = rounded_store_rating
+        
         return context
 
 class CategoryDetailView(DefaultView, DetailView):
@@ -315,9 +468,15 @@ class StoreDetailView(DefaultView, DetailView):
             UserProfileHistory.objects.filter(user_profile=self.user_profile, store=self.object).delete()
             history = UserProfileHistory(user_profile=self.user_profile, store=self.object)
             history.save()
-            store_products = Product.objects.filter(store=self.object)
-            context["store_orders_count"] = OrderProduct.objects.filter(product__id__in=store_products.values_list("id", flat=True)).count()
+            context["is_subscribed"] = UserProfileFavorite.objects.filter(user_profile=self.user_profile, store=self.object).exists()
 
+        store_products = Product.objects.filter(store=self.object)
+        context["store_orders_count"] = OrderProduct.objects.filter(order__is_pending=True, order__is_shifted=True, order__is_paid=True, order__is_delivered=True, order__is_cancelled=False, product__id__in=store_products.values_list("id", flat=True)).count()
+        average_rating = Review.objects.filter(product__id__in=store_products.values_list("id", flat=True)).aggregate(Avg("rating"))["rating__avg"]
+        if average_rating is not None:
+            context["rating"] = round(average_rating * 2) / 2
+        else:
+            context["rating"] = 0
         return context
 
 #Registration-Views
@@ -348,7 +507,7 @@ def LogInView(request):
         return render(request, "registration/log-in.html", data)
     else:
         return redirect("home")
-    
+
 #API-Views
 class UserAPIView(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -384,7 +543,7 @@ class ReviewAPIView(viewsets.ModelViewSet):
 
 #Form-Views
 def RemoveFromCartFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         cart_id = data.get("cart_id")
@@ -392,24 +551,32 @@ def RemoveFromCartFormView(request):
         user = get_object_or_404(User, id=sender_id)
         user_profile = get_object_or_404(UserProfile, user=user)
         cart = get_object_or_404(UserProfileCart, id=cart_id, user_profile=user_profile)
+        total = Decimal(0.00)
 
         cart.delete()
+
+        cart_products_selected_posters = []
 
         carts_selected = 0
 
         for user_profile_cart in UserProfileCart.objects.filter(user_profile=user_profile):
-            carts_selected += 1
+            if user_profile_cart.is_selected:
+                carts_selected += 1
+                cart_products_selected_posters.append(user_profile_cart.product.product_poster.first().photo.url)
+                total += user_profile_cart.product.price * user_profile_cart.quantity
 
         data = {
             "success": True,
             "message": "Removed from cart successfully",
             "carts_selected": carts_selected,
+            "cart_products_selected_posters": cart_products_selected_posters, 
+            "total": total
         }
         return JsonResponse(data, safe=False)
     return redirect("home")
 
 def ChangeCartQuantityFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         cart_id = data.get("cart_id")
@@ -421,6 +588,12 @@ def ChangeCartQuantityFormView(request):
 
         is_min = False 
         is_max = False
+        is_deleted = False 
+        cart_products_selected_posters = []
+        total = Decimal(0.00)
+        sum = Decimal(0.00)
+        act_sum = Decimal(0.00)
+        carts_selected = 0
         
         if is_plus == True:
             if cart.quantity < cart.product.stock:
@@ -430,6 +603,9 @@ def ChangeCartQuantityFormView(request):
             if cart.quantity > 1:
                 cart.quantity -= 1
                 cart.save()
+            elif cart.quantity == 1:
+                cart.delete()
+                is_deleted = True
         
         if cart.quantity == cart.product.stock:
             is_max = True
@@ -437,18 +613,33 @@ def ChangeCartQuantityFormView(request):
         if cart.quantity == 1:
             is_min = True
 
+        for user_profile_cart in UserProfileCart.objects.filter(user_profile=user_profile):
+            if user_profile_cart.is_selected:
+                carts_selected += 1
+                cart_products_selected_posters.append(user_profile_cart.product.product_poster.first().photo.url)
+                total += user_profile_cart.product.price * user_profile_cart.quantity
+
+        sum = cart.quantity * cart.product.price
+        act_sum = cart.quantity * cart.product.act_price
+
         data = {
             "success": True,
             "message": "Cart quantity successfully changed",
             "quantity": cart.quantity,
             "is_min": is_min,
             "is_max": is_max,
+            "is_deleted": is_deleted,
+            "cart_products_selected_posters": cart_products_selected_posters,
+            "carts_selected": carts_selected, 
+            "total": total,
+            "sum": sum,
+            "act_sum": act_sum,
         }
         return JsonResponse(data, safe=False)
     return redirect("home")
 
 def SelectCartFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         cart_id = data.get("cart_id")
@@ -460,6 +651,7 @@ def SelectCartFormView(request):
 
         all_selected = False
         is_selected = False
+        total = Decimal(0.00)
 
         if all:
             if user_profile_cart_products.filter(is_selected=True).count() == user_profile_cart_products.count():
@@ -487,18 +679,27 @@ def SelectCartFormView(request):
         if user_profile_cart_products.filter(is_selected=True).count() == user_profile_cart_products.count():
             all_selected = True
 
+        cart_products_selected_posters = []
+
+        for user_profile_cart in UserProfileCart.objects.filter(user_profile=user_profile):
+            if user_profile_cart.is_selected:
+                cart_products_selected_posters.append(user_profile_cart.product.product_poster.first().photo.url)
+                total += user_profile_cart.product.price * user_profile_cart.quantity
+
         data = {
             "success": True,
             "message": message,
             "all_selected": all_selected,
             "is_selected": is_selected,
             "selected_products_count": user_profile_cart_products.filter(is_selected=True).count(),
+            "cart_products_selected_posters": cart_products_selected_posters, 
+            "total": total
         }
         return JsonResponse(data, safe=False)
     return redirect("home")
 
 def LikeProductFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         product_id = data.get("product_id")
@@ -530,7 +731,7 @@ def LikeProductFormView(request):
     return redirect("home")
 
 def SubscribeStoreFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         store_id = data.get("store_id")
@@ -539,18 +740,26 @@ def SubscribeStoreFormView(request):
         store = get_object_or_404(Store, id=store_id)
         user_profile = get_object_or_404(UserProfile, user=user)
         
-        user_profile_favorite = UserProfileFavorite(user_profile=user_profile, store=store)
-        user_profile_favorite.save()
+        user_profile_favorite, is_subscribed = UserProfileFavorite.objects.get_or_create(user_profile=user_profile, store=store)
+
+        if not is_subscribed:
+            user_profile_favorite.delete()
+
+        subscribers = UserProfileFavorite.objects.filter(store=store).count()
+        subscribers_text = f"{subscribers} {'subscribers' if subscribers > 1 else 'subscriber'}"
 
         data = {
             "success": True,
             "message": "Store successfully added to subscriptions",
+            "is_subscribed": is_subscribed,
+            "subscribers": subscribers,
+            "text": subscribers_text,
         }
         return JsonResponse(data, safe=False)
     return redirect("home")
 
 def LikeReviewFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         review_id = data.get("review_id")
@@ -584,7 +793,7 @@ def LikeReviewFormView(request):
     return redirect("home")
 
 def AddToCartFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         product_id = data.get("product_id")
@@ -594,18 +803,22 @@ def AddToCartFormView(request):
         product = get_object_or_404(Product, id=product_id)
         user_profile = get_object_or_404(UserProfile, user=user)
 
-        user_profile_cart = UserProfileCart(user_profile=user_profile, product=product, quantity=quantity)
-        user_profile_cart.save()
+        user_profile_cart, is_added = UserProfileCart.objects.get_or_create(user_profile=user_profile, product=product, defaults={'quantity': quantity})
+
+        if not is_added:
+            user_profile_cart.quantity = quantity
 
         data = {
             "success": True,
             "message": "Product successfully added to cart",
+            "cart_id": user_profile_cart.id,
+            "is_added": is_added,
         }
         return JsonResponse(data, safe=False)
     return redirect("home")
 
 def SendReviewFormView(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         sender_id = data.get("sender_id")
         product_id = data.get("product_id")
@@ -622,5 +835,121 @@ def SendReviewFormView(request):
             "success": True,
             "message": "Review successfully sended to product",
         }
+        return JsonResponse(data, safe=False)
+    return redirect("home")
+
+def LogInFormView(request):
+    if request.method == "POST" and not request.user.is_authenticated:
+        data = json.loads(request.body)
+        email = data.get("email")
+        password = data.get("password")
+
+        user = None
+        is_password = False 
+        is_email = False
+
+        if email and password:
+            try:
+                email_validator(email)
+                try:
+                    user = User.objects.get(email=email)
+                    if user.check_password(password):
+                        user = user
+                    else:
+                        user = None
+                        is_password = True
+                except User.DoesNotExist:
+                    is_email = True
+
+                if user is not None:
+                    login(request, user)
+
+                    data = {
+                        "success": True,
+                        "message": "User successfully authenticated",
+                    }
+                else:
+                    data = {
+                        "success": False,
+                        "is_password": is_password,
+                        "is_email": is_email,
+                    }
+                    if is_email:
+                        data["message"] = "Account with this email does not exist"
+                    else:
+                        if is_password:
+                            data["message"] = "Incorrect password"
+            except ValidationError:
+                data = {
+                    "success": False,
+                    "message": "Invalid email",
+                    "is_email": True,
+                }
+        else:
+            data = {
+                "success": False, 
+                "message": "This field can not be empty",
+                "is_empty": True,
+            }
+            if not email:
+                data["is_email"] = True
+            if not password:
+                data["is_password"] = True
+        return JsonResponse(data, safe=False)
+    return redirect("home")
+
+def SignUpFormView(request):
+    if request.method == "POST" and not request.user.is_authenticated:
+        data = json.loads(request.body)
+        name = data.get("name")
+        email = data.get("email")
+        password = data.get("password")
+        confirm_password = data.get("confirm_password")
+
+        if name and email and password and confirm_password:
+            try:
+                email_validator(email)
+                if User.objects.filter(email=email).exists():
+                    data = {
+                        "success": False,
+                        "message": "Account with this email already exists",
+                        "is_email": True,
+                    }
+                else:
+                    if password == confirm_password:
+                        user = User(name=name, email=email)
+                        user.set_password(password)
+                        user.save()
+                        login(request, user)
+                        data = {
+                            "success": True,
+                            "message": "Account successfully created",
+                        }
+                    else:
+                        data = {
+                            "success": False,
+                            "message": "Password does not match",
+                            "is_password_confirm": True,
+                        }
+            except ValidationError:
+                data = {
+                    "success": False,
+                    "message": "Invalid email",
+                    "is_email": True,
+                }
+        else:
+            data = {
+                "success": False,
+                "message": "This field can not be empty",
+                "is_empty": True,
+            }
+            if not name:
+                data["is_name"] = True
+            if not email:
+                data["is_email"] = True
+            if not password:
+                data["is_password"] = True
+            if not confirm_password:
+                data["is_password_confirm"] = True
         return JsonResponse(data, safe=False)
     return redirect("home")

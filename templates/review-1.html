@@ -5,13 +5,34 @@
             <div style="gap: 16px;" class="wdth-cvr flx-ctr flx-lft">
                 <div class="flx-ctr">
                     <span style="--fgr-sz: 36px;" class="fgr ovrfl-hdn bdr-rds-cvr">
+                        {% if review.sender.photo %}
                         <img src="{{review.sender.photo.url}}">
+                        {% else %}
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_371_2)">
+                                <path
+                                    d="M22.5 11.75C22.5 17.687 17.687 22.5 11.75 22.5C5.81294 22.5 1 17.687 1 11.75C1 5.81294 5.81294 1 11.75 1C17.687 1 22.5 5.81294 22.5 11.75Z"
+                                    fill="white" stroke="black" stroke-width="1.35" />
+                                <path
+                                    d="M14.7061 9.06233C14.7061 10.695 13.3825 12.0186 11.7498 12.0186C10.1171 12.0186 8.79358 10.695 8.79358 9.06233C8.79358 7.42964 10.1171 6.10608 11.7498 6.10608C13.3825 6.10608 14.7061 7.42964 14.7061 9.06233Z"
+                                    stroke="black" stroke-width="1.35" />
+                                <path
+                                    d="M4.76233 19.2751L5.36476 18.2208C6.32173 16.5462 8.10271 15.5126 10.0316 15.5126H13.4681C15.3969 15.5126 17.1779 16.5462 18.1349 18.2208L18.7373 19.2751"
+                                    stroke="black" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_371_2">
+                                    <rect width="23.5" height="23.5" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        {% endif %}
                     </span>
                 </div>
                 <div class="flx-ctr">
                     <div class="flx-drt-cln flx-tp">
                         <div class="flx-ctr">
-                            <span>{{review.sender.name}}</span>
+                            <span>{% if review.sender.name %}{{review.sender.name}}{% else %}User {{user.custom_id}}{% endif %}</span>
                         </div>
                         <div class="snd-dt flx-ctr">
                             <h6>{{review.created|date:"j F Y"}}</h6>
@@ -29,7 +50,7 @@
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.00004 11.5133L12.12 14L11.0267 9.31334L14.6667 6.16001L9.87337 5.75334L8.00004 1.33334L6.12671 5.75334L1.33337 6.16001L4.97337 9.31334L3.88004 14L8.00004 11.5133Z"
-                                    fill="#E85749" />
+                                    fill="{% if review.rating >= 1 %}var(--bg-clr-4){% elif 1 > review.rating %}var(--bg-clr-7){% endif %}" />
                             </svg>
                         </span>
                     </div>
@@ -39,7 +60,7 @@
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.00004 11.5133L12.12 14L11.0267 9.31334L14.6667 6.16001L9.87337 5.75334L8.00004 1.33334L6.12671 5.75334L1.33337 6.16001L4.97337 9.31334L3.88004 14L8.00004 11.5133Z"
-                                    fill="#E85749" />
+                                    fill="{% if review.rating >= 2 %}var(--bg-clr-4){% elif 2 > review.rating %}var(--bg-clr-7){% endif %}" />
                             </svg>
                         </span>
                     </div>
@@ -49,7 +70,7 @@
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.00004 11.5133L12.12 14L11.0267 9.31334L14.6667 6.16001L9.87337 5.75334L8.00004 1.33334L6.12671 5.75334L1.33337 6.16001L4.97337 9.31334L3.88004 14L8.00004 11.5133Z"
-                                    fill="#E85749" />
+                                    fill="{% if review.rating >= 3 %}var(--bg-clr-4){% elif 3 > review.rating %}var(--bg-clr-7){% endif %}" />
                             </svg>
                         </span>
                     </div>
@@ -59,7 +80,7 @@
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.00004 11.5133L12.12 14L11.0267 9.31334L14.6667 6.16001L9.87337 5.75334L8.00004 1.33334L6.12671 5.75334L1.33337 6.16001L4.97337 9.31334L3.88004 14L8.00004 11.5133Z"
-                                    fill="#E85749" />
+                                    fill="{% if review.rating >= 4 %}var(--bg-clr-4){% elif 4 > review.rating %}var(--bg-clr-7){% endif %}" />
                             </svg>
                         </span>
                     </div>
@@ -69,7 +90,7 @@
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.00004 11.5133L12.12 14L11.0267 9.31334L14.6667 6.16001L9.87337 5.75334L8.00004 1.33334L6.12671 5.75334L1.33337 6.16001L4.97337 9.31334L3.88004 14L8.00004 11.5133Z"
-                                    fill="#E85749" />
+                                    fill="{% if review.rating == 5 %}var(--bg-clr-4){% elif 5 > review.rating %}var(--bg-clr-7){% endif %}" />
                             </svg>
                         </span>
                     </div>
@@ -84,15 +105,17 @@
         <div class="wdth-cvr flx-ctr">
             <div class="wdth-cvr flx-ctr flx-lft">
                 <div class="flx-ctr">
+                    {% if user.is_authenticated %}
                     <button type="button" class="btn-lk-rv flx-ctr" id="btn-lk-rv-{{review.id}}">
                         <div class="flx-ctr">
                             <span style="--fgr-sz: 18px;" class="fgr">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="{% if review.id in user_profile_wishlist_reviews %}#E85749{% else %}none{% endif %}" id="svg-{{review.id}}"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg width="18" height="18" viewBox="0 0 18 18"
+                                    fill="{% if review.id in user_profile_wishlist_reviews %}var(--bg-clr-4){% else %}none{% endif %}"
+                                    id="svg-{{review.id}}" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_98_56)">
                                         <path
                                             d="M9 15.1875C9 15.1875 1.96875 11.25 1.96875 6.46876C1.96875 5.62352 2.2616 4.80439 2.79747 4.15073C3.33334 3.49708 4.07913 3.04927 4.90795 2.88351C5.73677 2.71774 6.59743 2.84426 7.34348 3.24153C8.08954 3.6388 8.67491 4.28229 9 5.06251C9.32509 4.28229 9.91046 3.6388 10.6565 3.24153C11.4026 2.84426 12.2632 2.71774 13.092 2.88351C13.9209 3.04927 14.6667 3.49708 15.2025 4.15073C15.7384 4.80439 16.0312 5.62352 16.0312 6.46876C16.0312 11.25 9 15.1875 9 15.1875Z"
-                                            stroke="#E85749" stroke-width="1.5" stroke-linecap="round"
+                                            stroke="var(--bg-clr-4)" stroke-width="1.5" stroke-linecap="round"
                                             stroke-linejoin="round" />
                                     </g>
                                     <defs>
@@ -109,6 +132,33 @@
                         </div>
                         {% endif %}
                     </button>
+                    {% else %}
+                    <a href="{% url 'log-in' %}" class="btn-lk-rv flx-ctr">
+                        <div class="flx-ctr">
+                            <span style="--fgr-sz: 18px;" class="fgr">
+                                <svg width="18" height="18" viewBox="0 0 18 18"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_98_56)">
+                                        <path
+                                            d="M9 15.1875C9 15.1875 1.96875 11.25 1.96875 6.46876C1.96875 5.62352 2.2616 4.80439 2.79747 4.15073C3.33334 3.49708 4.07913 3.04927 4.90795 2.88351C5.73677 2.71774 6.59743 2.84426 7.34348 3.24153C8.08954 3.6388 8.67491 4.28229 9 5.06251C9.32509 4.28229 9.91046 3.6388 10.6565 3.24153C11.4026 2.84426 12.2632 2.71774 13.092 2.88351C13.9209 3.04927 14.6667 3.49708 15.2025 4.15073C15.7384 4.80439 16.0312 5.62352 16.0312 6.46876C16.0312 11.25 9 15.1875 9 15.1875Z"
+                                            stroke="var(--bg-clr-4)" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_98_56">
+                                            <rect width="18" height="18" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </span>
+                        </div>
+                        {% if review.user_profile_favorite_review.all|count > 0 %}
+                        <div style="height: 14px;" class="lks-cnt flx-ctr">
+                            <h6>{{review.user_profile_favorite_review.all|count}}</h6>
+                        </div>
+                        {% endif %}
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -139,7 +189,7 @@
                         var likeCount = this.querySelector(".lks-cnt");
                         if (data.is_liked) {
                             svg.removeAttribute("fill");
-                            svg.setAttribute("fill", "#E85749");
+                            svg.setAttribute("fill", "var(--bg-clr-4)");
                             if (!likeCount) {
                                 this.insertAdjacentHTML('beforeend', `
                                     <div style="height: 14px;" class="lks-cnt flx-ctr">
@@ -147,9 +197,7 @@
                                     </div>
                                 `);
                             }
-                            else {
-                                likeCount.textContent = likeCount + 1;
-                            }
+                            likeCount.textContent = data.likes;
                         }
                         else if (data.is_removed) {
                             var likes = "{{review.user_profile_favorite_review.all|count}}";
@@ -162,9 +210,7 @@
                             else if (likes == "0" && is_liked == "0") {
                                 likeCount.remove();
                             }
-                            else if (likes > 1) {
-                                likeCount.textContent = likeCount - 1;
-                            }
+                            likeCount.textContent = data.likes;
                         }
                     })
                     .catch(error => {

@@ -2,5 +2,180 @@
 {% load static %}
 {% load my_tags %}
 {% block content %}
-
+<div class="wdth-cvr wrp">
+    <div style="gap: 12px; padding: 12px 0;" class="ptn-rlv wdth-cvr flx-ctr flx-tp">
+        <div class="flx-cvr flx-ctr">
+            <div class="wdth-cvr flx-drt-cln">
+                <div class="wdth-cvr">
+                    <div class="wdth-cvr flx-ctr">
+                        <div style="gap: 14px;" class="wdth-cvr flx-drt-cln">
+                            <div class="wdth-cvr flx-ctr flx-lft">
+                                <h2>Personal information</h2>
+                            </div>
+                            <div style="padding: 14px;" class="crt-empt bdr-bx wdth-cvr bdr-rds-1 flx-drt-cln">
+                                <div style="padding: 0 0 4px 0;" class="pfp bdr-rds-2 wdth-cvr flx-ctr flx-lft">
+                                    <button type="button" class="flx-ctr">
+                                        <span style="--fgr-sz: 124px;" class="bdr-rds-cvr ovrfl-hdn fgr">
+                                            {% if user.photo %}
+                                            <img src="{{user.photo.url}}">
+                                            {% else %}
+                                            <svg width="124" height="124" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_371_2)">
+                                                    <path
+                                                        d="M22.5 11.75C22.5 17.687 17.687 22.5 11.75 22.5C5.81294 22.5 1 17.687 1 11.75C1 5.81294 5.81294 1 11.75 1C17.687 1 22.5 5.81294 22.5 11.75Z"
+                                                        fill="white" stroke="black" stroke-width="1.1" />
+                                                    <path
+                                                        d="M14.7061 9.06233C14.7061 10.695 13.3825 12.0186 11.7498 12.0186C10.1171 12.0186 8.79358 10.695 8.79358 9.06233C8.79358 7.42964 10.1171 6.10608 11.7498 6.10608C13.3825 6.10608 14.7061 7.42964 14.7061 9.06233Z"
+                                                        stroke="black" stroke-width="1.1" />
+                                                    <path
+                                                        d="M4.76233 19.2751L5.36476 18.2208C6.32173 16.5462 8.10271 15.5126 10.0316 15.5126H13.4681C15.3969 15.5126 17.1779 16.5462 18.1349 18.2208L18.7373 19.2751"
+                                                        stroke="black" stroke-width="1.1" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_371_2">
+                                                        <rect width="23.5" height="23.5" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                            {% endif %}
+                                        </span>
+                                    </button>
+                                    <div class="flx-ctr">
+                                        <div class="inf flx-drt-cln flx-tp">
+                                            <div style="height: 38px;" class="nm flx-ctr flx-lft">
+                                                <h2>
+                                                    {% if user.name %}
+                                                    {{user.name}} {% if user.surname %}{{user.surname}}{% endif %}
+                                                    {% endif %}
+                                                </h2>
+                                            </div>
+                                            <div style="height: 16px;" class="eml flx-ctr flx-lft">
+                                                <span>{% if user.email %}{{user.email}}{% endif %}</span>
+                                            </div>
+                                            <div style="height: 16px;" class="phn flx-ctr flx-lft">
+                                                <span>{% if user.phone %}{{user.phone}}{% endif %}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stngs-sct wdth-cvr flx-ctr">
+                                    <div class="stngs-sct-inpt flx-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr">
+                                            <input type="text" placeholder="Name"
+                                                value="{% if user.surname %}{{user.name}}{% endif %}" required
+                                                class="bdr-rds-3 wdth-cvr bdr-bx flx-ctr">
+                                        </div>
+                                    </div>
+                                    <div class="stngs-sct-inpt flx-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr">
+                                            <input type="text" placeholder="Surname"
+                                                value="{% if user.surname %}{{user.surname}}{% endif %}"
+                                                class="bdr-rds-3 wdth-cvr bdr-bx flx-ctr">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stngs-sct wdth-cvr flx-ctr">
+                                    <div class="stngs-sct-inpt flx-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr">
+                                            <input type="text" placeholder="Email"
+                                                value="{% if user.email %}{{user.email}}{% endif %}" required
+                                                class="bdr-rds-3 wdth-cvr bdr-bx flx-ctr">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stngs-sct wdth-cvr flx-ctr">
+                                    <div class="stngs-sct-inpt flx-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr">
+                                            <input type="text" placeholder="Phone"
+                                                value="{% if user.phone %}{{user.phone}}{% endif %}" required
+                                                class="bdr-rds-3 wdth-cvr bdr-bx flx-ctr">
+                                        </div>
+                                    </div>
+                                    <div class="stngs-sct-inpt flx-cvr flx-ctr">
+                                        <div class="wdth-cvr flx-ctr">
+                                            <input type="text" placeholder="Birthday"
+                                                value="{% if user.birthday %}{{user.birthday}}{% endif %}"
+                                                class="bdr-rds-3 wdth-cvr bdr-bx flx-ctr">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stngs-sct wdth-cvr flx-ctr flx-lft">
+                                    <div class="flx-ctr">
+                                        <button type="button" style="--fgr-sz: 136px;"
+                                            class="fgr btn-slct bdr-rds-3 {% if user.gender == 'MALE' %}actv{% endif %} flx-ctr">
+                                            <div class="flx-drt-cln">
+                                                <div class="flx-ctr">
+                                                    <span style="--fgr-sz: 44px; margin-left: 6px" class="fgr">
+                                                        <svg width="44" height="44" viewBox="0 0 56 56" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M33.2492 7C32.785 7 32.3399 6.81563 32.0117 6.48744C31.6835 6.15925 31.4992 5.71413 31.4992 5.25C31.4992 4.78587 31.6835 4.34075 32.0117 4.01256C32.3399 3.68437 32.785 3.5 33.2492 3.5H50.7492C51.2133 3.5 51.6584 3.68437 51.9866 4.01256C52.3148 4.34075 52.4992 4.78587 52.4992 5.25V22.75C52.4992 23.2141 52.3148 23.6592 51.9866 23.9874C51.6584 24.3156 51.2133 24.5 50.7492 24.5C50.285 24.5 49.8399 24.3156 49.5117 23.9874C49.1835 23.6592 48.9992 23.2141 48.9992 22.75V9.4745L34.5477 23.926C37.389 27.4022 38.7856 31.8374 38.4487 36.3144C38.1118 40.7914 36.0671 44.9676 32.7375 47.9794C29.4079 50.9911 25.0482 52.608 20.5599 52.4956C16.0717 52.3832 11.7983 50.5501 8.62368 47.3755C5.44903 44.2008 3.61594 39.9275 3.50354 35.4392C3.39114 30.951 5.00803 26.5912 8.01979 23.2617C11.0316 19.9321 15.2078 17.8874 19.6848 17.5505C24.1618 17.2135 28.597 18.6102 32.0732 21.4515L46.5247 7H33.2492ZM20.9992 21C17.2861 21 13.7252 22.475 11.0997 25.1005C8.47416 27.726 6.99916 31.287 6.99916 35C6.99916 38.713 8.47416 42.274 11.0997 44.8995C13.7252 47.525 17.2861 49 20.9992 49C24.7122 49 28.2731 47.525 30.8987 44.8995C33.5242 42.274 34.9992 38.713 34.9992 35C34.9992 31.287 33.5242 27.726 30.8987 25.1005C28.2731 22.475 24.7122 21 20.9992 21Z" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="flx-ctr">
+                                                    <h6>Male</h6>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div class="flx-ctr">
+                                        <button type="button" style="--fgr-sz: 136px;"
+                                            class="fgr btn-slct bdr-rds-3 {% if user.gender == 'FEMALE' %}actv{% endif %} flx-ctr">
+                                            <div class="flx-drt-cln">
+                                                <div class="flx-ctr">
+                                                    <span style="--fgr-sz: 44px;" class="fgr">
+                                                        <svg width="44" height="44" viewBox="0 0 56 56" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M28 3.49985C24.287 3.49985 20.726 4.97485 18.1005 7.60036C15.475 10.2259 14 13.7868 14 17.4999C14 21.2129 15.475 24.7738 18.1005 27.3993C20.726 30.0249 24.287 31.4999 28 31.4999C31.713 31.4999 35.274 30.0249 37.8995 27.3993C40.525 24.7738 42 21.2129 42 17.4999C42 13.7868 40.525 10.2259 37.8995 7.60036C35.274 4.97485 31.713 3.49985 28 3.49985ZM10.5 17.4999C10.5 14.1133 11.4827 10.7995 13.3288 7.96038C15.1749 5.12125 17.8051 2.87875 20.9005 1.50487C23.9958 0.130984 27.4233 -0.315264 30.7672 0.220246C34.1112 0.755755 37.2279 2.25001 39.7394 4.5218C42.251 6.79358 44.0494 9.74529 44.9165 13.0189C45.7837 16.2926 45.6824 19.7475 44.6249 22.9647C43.5674 26.1819 41.5991 29.0232 38.9588 31.1439C36.3185 33.2646 33.1196 34.5737 29.75 34.9124V41.9999H36.75C37.2141 41.9999 37.6593 42.1842 37.9874 42.5124C38.3156 42.8406 38.5 43.2857 38.5 43.7499C38.5 44.214 38.3156 44.6591 37.9874 44.9873C37.6593 45.3155 37.2141 45.4999 36.75 45.4999H29.75V54.2499C29.75 54.714 29.5656 55.1591 29.2374 55.4873C28.9093 55.8155 28.4641 55.9999 28 55.9999C27.5359 55.9999 27.0908 55.8155 26.7626 55.4873C26.4344 55.1591 26.25 54.714 26.25 54.2499V45.4999H19.25C18.7859 45.4999 18.3408 45.3155 18.0126 44.9873C17.6844 44.6591 17.5 44.214 17.5 43.7499C17.5 43.2857 17.6844 42.8406 18.0126 42.5124C18.3408 42.1842 18.7859 41.9999 19.25 41.9999H26.25V34.9124C21.9334 34.4785 17.9318 32.4568 15.0216 29.2393C12.1113 26.0219 10.4999 21.8382 10.5 17.4999Z" />
+                                                        </svg>
+                                                </div>
+                                                <div class="flx-ctr">
+                                                    <h6>Male</h6>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="stngs-sct wdth-cvr flx-ctr flx-lft nn">
+                                    <div class="flx-ctr">
+                                        <button type="button" class="btn-sbmt bdr-rds-3 flx-ctr bdr-bx actv">
+                                            <h6 style="height: 16px;">Save</h6>
+                                        </button>
+                                    </div>
+                                    <div class="flx-ctr">
+                                        <button type="button" class="btn-sbmt bdr-rds-3 flx-ctr bdr-bx">
+                                            <h6 style="height: 16px;">Cancel</h6>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="stngs-sct wdth-cvr flx-ctr">
+                                    <hr class="wdth-cvr flx-ctr">
+                                </div>
+                                <div class="add-inf wdth-cvr flx-spc-btwn">
+                                    <div class="flx-ctr">
+                                        <button type="button" class="flx-ctr">
+                                            <h6>Change password</h6>
+                                        </button>
+                                    </div>
+                                    <div class="flx-ctr">
+                                        <button type="button" class="flx-ctr">
+                                            <h6>Delete account</h6>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="max-width: 328px; top: calc(80px + 12px);" class="ptn-stk lft-cvr wdth-cvr flx-ctr">
+            {% include "navbar.html" %}
+        </div>
+    </div>
+</div>
 {% endblock %}
