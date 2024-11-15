@@ -1,12 +1,11 @@
 # Django online shopping website.
 
 <p align='center'>
-<img src="https://img.shields.io/badge/Django-239120?logo=django&logoColor=white" alt=""/>
-<img src="https://img.shields.io/badge/Python-239120?logo=python&logoColor=white"  alt=""/>
-<img src="https://img.shields.io/badge/SQL%20Server-CC2927?logo=microsoft-sql-server&logoColor=white"  alt=""/>
-<img src="https://img.shields.io/badge/Github-181717?logo=github&logoColor=white"  alt=""/>
+  <img src="https://img.shields.io/badge/Django-239120?logo=django&logoColor=white" alt=""/>
+  <img src="https://img.shields.io/badge/Python-306998?logo=python&logoColor=white"  alt=""/>
+  <img src="https://img.shields.io/badge/SQL%20Server-CC2927?logo=microsoft-sql-server&logoColor=white"  alt=""/>
+  <img src="https://img.shields.io/badge/Github-181717?logo=github&logoColor=white"  alt=""/>
 </p>
-
 
 <hr class="dotted">
 It is a robust online shopping website crafted with the Django Rest Framework, offering a seamless foundation for managing products and creating a high-quality, feature-rich shopping experience. It’s all you need to build and scale your store with elegance and efficiency.
