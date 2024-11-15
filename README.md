@@ -31,17 +31,18 @@ Connect with me at:
 <p align='center'>
 
   <a href="https://www.instagram.com/t1ch_coder/">
-    <img src="https://img.shields.io/badge/instagram-%230077B5.svg?&style=for-the-badge&logo=instagram&logoColor=white" />
+    <img src="https://img.shields.io/badge/instagram-%23E4405F.svg?&style=for-the-badge&logo=instagram&logoColor=white" />
   </a>&nbsp;&nbsp;
   <a href="https://x.com/T1chCoder">
-    <img src="https://img.shields.io/badge/x-%23E4405F.svg?&style=for-the-badge&logo=x&logoColor=white" />        
+    <img src="https://img.shields.io/badge/x-%2300ACEE.svg?&style=for-the-badge&logo=x&logoColor=white" />        
   </a>&nbsp;&nbsp;
   <a href="https://discordapp.com/users/1299474775239823392">
-    <img src="https://img.shields.io/badge/discord-%23E4405F.svg?&style=for-the-badge&logo=discord&logoColor=white" />        
+    <img src="https://img.shields.io/badge/discord-%23000C18.svg?&style=for-the-badge&logo=discord&logoColor=white" />        
   </a>&nbsp;&nbsp;
   <a href="https://t.me/T1chCoder">
-    <img src="https://img.shields.io/badge/telegram-%23E4405F.svg?&style=for-the-badge&logo=telegram&logoColor=white" />        
+    <img src="https://img.shields.io/badge/telegram-%2300A9E0.svg?&style=for-the-badge&logo=telegram&logoColor=white" />        
   </a>&nbsp;&nbsp;
+
 
 </p>
 
