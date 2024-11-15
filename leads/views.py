@@ -55,7 +55,7 @@ class HomeView(DefaultView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["banners"] = Banner.objects.all()
+        context["banners"] = Banner.objects.order_by("created")
         context["hot_products"] = self.hot_products
         context["popular_products"] = self.popular_products
 

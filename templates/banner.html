@@ -25,7 +25,7 @@
         <div style="transform: translateX(0%);" class="hgt-cvr flx-ctr flx-lft" id="bnr-lst">
             {% for banner in banners %}
             <div style="min-width: 100%;" class="bnr-pstr flx-ctr cvr"
-                id="{% if banner == banners.last %}bnr-pstr-crnt{% endif %}">
+                id="{% if banner == banners.first %}bnr-pstr-crnt{% endif %}">
                 <div class="cvr flx-ctr">
                     <img src="{{banner.photo.url}}">
                 </div>
@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="dots ptn-ablt flx-ctr">
-        {% for banner in banners|reversed %}
+        {% for banner in banners %}
         <div class="dot flx-ctr">
             <span style="--fgr-sz: 10px"
                 class="{% if banner == banners.first %}actv{% endif %}  fgr bdr-rds-cvr flx-ctr"></span>
