@@ -3,7 +3,7 @@
 <p align='center'>
   <img src="https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white" alt=""/>
   <img src="https://img.shields.io/badge/Python-306998?logo=python&logoColor=white"  alt=""/>
-  <img src="https://img.shields.io/badge/SQL%20Server-D83B01?logo=microsoft-sql-server&logoColor=white"  alt=""/>
+  <img src="https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white"  alt=""/>
   <img src="https://img.shields.io/badge/Github-2C2C2C?logo=github&logoColor=white"  alt=""/>
 </p>
 
