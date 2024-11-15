@@ -1,10 +1,10 @@
 # Django online shopping website.
 
 <p align='center'>
-  <img src="https://img.shields.io/badge/Blue%20Eyes-1E90FF?style=for-the-badge&logo=eye&logoColor=white" alt=""/>
-  <img src="https://img.shields.io/badge/Green%20Eyes-32CD32?style=for-the-badge&logo=eye&logoColor=white" alt=""/>
-  <img src="https://img.shields.io/badge/Brown%20Eyes-8B4513?style=for-the-badge&logo=eye&logoColor=white" alt=""/>
-  <img src="https://img.shields.io/badge/Gray%20Eyes-808080?style=for-the-badge&logo=eye&logoColor=white" alt=""/>
+  <img src="https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white" alt=""/>
+  <img src="https://img.shields.io/badge/Python-306998?logo=python&logoColor=white"  alt=""/>
+  <img src="https://img.shields.io/badge/SQL%20Server-D83B01?logo=microsoft-sql-server&logoColor=white"  alt=""/>
+  <img src="https://img.shields.io/badge/Github-2C2C2C?logo=github&logoColor=white"  alt=""/>
 </p>
 
 <hr class="dotted">
