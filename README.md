@@ -9,14 +9,14 @@
 
 
 <hr class="dotted">
-It is an online store API system built on Django Rest Framework. It contains everything you need to add products and use as a quality store.
+It is a robust online shopping website crafted with the Django Rest Framework, offering a seamless foundation for managing products and creating a high-quality, feature-rich shopping experience. It’s all you need to build and scale your store with elegance and efficiency.
 
 ## Screenshots
 
-### Swagger (all request methods and urls)
-![App Screenshot](https://imgur.com/c2kITAs.png)
+### Home
+![App Screenshot]([https://imgur.com/c2kITAs.png](https://imgur.com/nKniQGc))
 ### Products
-![App Screenshot](https://imgur.com/M8LUsyo.png)
+![App Screenshot]([https://imgur.com/M8LUsyo.png](https://imgur.com/a/li8yamX))
 
 ## About this Project:
 
@@ -25,36 +25,25 @@ I'll be happy if you provide any feedback or code improvements or suggestions.
 Connect with me at:
 
 <p align='center'>
-
-  <a href="https://www.linkedin.com/in/saidalo-saidakhmedov-7b8311185/">
-    <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white" />
-  </a>&nbsp;&nbsp;
-  <a href="https://stackoverflow.com/users/17614591/saidalo">
-    <img src="https://img.shields.io/badge/stackoverflow-%23E4405F.svg?&style=for-the-badge&logo=stackoverflow&logoColor=white" />        
-  </a>&nbsp;&nbsp;
-
-</p>
-
-<p align='center'>
-  📫 How to reach me: <a href='mailto:saidakhmedovsaidalo@gmail.com'>saidakhmedovsaidalo@gmail.com</a>
+  📫 How to reach me: <a href='mailto:t1chcoder@gmail.com'>t1chcoder@gmail.com</a>
 </p>
 
 ## Some technical information:
 
-- Django - 4.1.3
-- Django Rest Framework - 3.14.0
-- Django Rest Framework Simple JWT - 5.2.2
-- Django Environ - 0.9.0
-- Faker - 16.6.1
-- pytest-django - 4.5.2
+- Django - 5.1.3
+- Django Rest Framework - 3.15.2
+- Django Database URL - 2.3.0
+- Django Crispy Forms - 2.3
+- Gunicorn - 23.0.0
+- Pillow - 11.0.0
 
 ## To Install:
 
 Cloning the Repository:
 
 ```
-$ git clone github.com/Saidalo1/online_shop_api.git
-$ cd online_shop_api 
+$ git clone github.com/T1chCoder/ShopSmart.git
+$ cd ShopSmart
 ```
 
 Installing the environment control:
@@ -81,7 +70,7 @@ $ source env/bin/activate
 Installing dependencies:
 
 ```
-$ pip install -r requirements/base.txt
+$ pip install -r requirements.txt
 ```
 
 Create a .env file on ecom folder (/root/.env) setting all requirements without using space after "=".
@@ -95,11 +84,12 @@ SECRET_KEY=SECRET_KEY
 # Database settings
 DATABASE_NAME=DATABASE_NAME
 DATABASE_USER=DATABASE_USER
-DATABASE_PASS=DATABASE_PASS
+DATABASE_PASSWORD=DATABASE_PASSWORD
 
-# Email settings
-EMAIL_HOST_USER=YOUREMAIL
-EMAIL_HOST_PASSWORD=YOUREMAILSHOSTPASSWORD
+# Additional settings
+ADMIN_PANEL_KEY=ADMIN_PANEL_KEY
+API_V1_KEY
+DEBUG=DEBUG
 ```
 
 Installing MAKE:
@@ -173,19 +163,6 @@ $ pytest
 You can send how many PR's do you want, I'll be glad to analyse and accept them! And if you have any question about the
 project...
 
-📫Email-me: <a href='mailto:saidakhmedovsaidalo@gmail.com'>saidakhmedovsaidalo@gmail.com</a>
-
- <a href="https://www.linkedin.com/in/saidalo-saidakhmedov-7b8311185/">
-    <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white" />
-    </a>&nbsp;&nbsp;
+📫Email-me: <a href='mailto:t1chcoder@gmail.com'>t1chcoder@gmail.com</a>
 
 Thank you!
-
-## License
-
-<a href="https://github.com/Saidalo1/online_shop_api/blob/master/LICENSE.md">
-    <img alt="NPM" src="https://img.shields.io/npm/l/license?style=for-the-badge">
-</a>&nbsp;&nbsp;
-
-This project is licensed under the MIT License - see
-the [LICENSE.md](https://github.com/Saidalo1/online_shop_api/blob/master/LICENSE.md) file for details.
