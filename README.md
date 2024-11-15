@@ -29,6 +29,23 @@ I'll be happy if you provide any feedback or code improvements or suggestions.
 Connect with me at:
 
 <p align='center'>
+
+  <a href="https://www.instagram.com/t1ch_coder/">
+    <img src="https://img.shields.io/badge/instagram-%230077B5.svg?&style=for-the-badge&logo=instagram&logoColor=white" />
+  </a>&nbsp;&nbsp;
+  <a href="https://x.com/T1chCoder">
+    <img src="https://img.shields.io/badge/x-%23E4405F.svg?&style=for-the-badge&logo=x&logoColor=white" />        
+  </a>&nbsp;&nbsp;
+  <a href="https://discordapp.com/users/1299474775239823392">
+    <img src="https://img.shields.io/badge/discord-%23E4405F.svg?&style=for-the-badge&logo=discord&logoColor=white" />        
+  </a>&nbsp;&nbsp;
+  <a href="https://t.me/T1chCoder">
+    <img src="https://img.shields.io/badge/telegram-%23E4405F.svg?&style=for-the-badge&logo=telegram&logoColor=white" />        
+  </a>&nbsp;&nbsp;
+
+</p>
+
+<p align='center'>
   📫 How to reach me: <a href='mailto:t1chcoder@gmail.com'>t1chcoder@gmail.com</a>
 </p>
 
