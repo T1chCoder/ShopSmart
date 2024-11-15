@@ -31,7 +31,7 @@ Connect with me at:
 <p align='center'>
 
   <a href="https://www.instagram.com/t1ch_coder/">
-    <img src="https://img.shields.io/badge/instagram-%23E4405F.svg?&style=for-the-badge&logo=instagram&logoColor=white" />
+    <img src="https://img.shields.io/badge/instagram-%23E1306C.svg?&style=for-the-badge&logo=instagram&logoColor=white" />
   </a>&nbsp;&nbsp;
   <a href="https://x.com/T1chCoder">
     <img src="https://img.shields.io/badge/x-%23000000.svg?&style=for-the-badge&logo=x&logoColor=white" />        
@@ -40,7 +40,7 @@ Connect with me at:
     <img src="https://img.shields.io/badge/discord-%235865F2.svg?&style=for-the-badge&logo=discord&logoColor=white" />        
   </a>&nbsp;&nbsp;
   <a href="https://t.me/T1chCoder">
-    <img src="https://img.shields.io/badge/telegram-%2300A9E0.svg?&style=for-the-badge&logo=telegram&logoColor=white" />        
+    <img src="https://img.shields.io/badge/telegram-%230088CC.svg?&style=for-the-badge&logo=telegram&logoColor=white" />        
   </a>&nbsp;&nbsp;
 
 
