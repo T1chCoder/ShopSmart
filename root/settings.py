@@ -1,8 +1,11 @@
 import os
 import dj_database_url
-from dotenv import load_dotenv
 
-load_dotenv()
+env_vars = os.environ
+
+# Print all environment variables
+for key, value in env_vars.items():
+    print(f"{key}={value}")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
