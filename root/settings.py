@@ -13,6 +13,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SERVER_KEY")
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY is not set!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(os.getenv('DEBUG', 'False')) == True
