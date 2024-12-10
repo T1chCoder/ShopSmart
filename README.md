@@ -94,7 +94,7 @@ Installing dependencies:
 $ pip install -r requirements.txt
 ```
 
-Create a .env file on ecom folder (/root/.env) setting all requirements without using space after "=".
+Create a .env file on ecom folder (/.env) setting all requirements without using space after "=".
 
 Copy and paste on our .env file:
 
