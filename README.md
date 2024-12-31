@@ -184,7 +184,7 @@ $ pytest
 You can send how many PR's do you want, I'll be glad to analyse and accept them! And if you have any question about the
 project...
 
-📫Email-me: <a href='mailto:t1chcoder@gmail.com'>t1chcoder@gmail.com</a>
+📫Email-me: <a href='mailto:zhumabaevasadbek123@gmail.com'>zhumabaevasadbek123@gmail.com</a>
 
 Thank you!
 
